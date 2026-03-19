@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIA - Vias de Sinalização Oncológica</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e3c72;
+            --accent: #2a5298;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #3498db;
+            --light-bg: #ecf0f1;
+            --dark-text: #2c3e50;
+            --border-color: #bdc3c7;
+            --muted: #7f8c8d;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark-text);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--primary);
+        }
+
+        header h1 {
+            color: var(--primary);
+            font-size: 2.35em;
+            margin-bottom: 5px;
+        }
+
+        header .subtitle {
+            color: var(--accent);
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        header .author {
+            color: var(--muted);
+            font-size: 0.95em;
+            font-style: italic;
+        }
+
+        .auth-section,
+        .import-section,
+        .quiz-section,
+        .main-panel,
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-section,
+        .import-section {
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .auth-form,
+        .file-input-wrapper {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .auth-form input,
+        .file-input-wrapper input[type="file"] {
+            flex: 1;
+            min-width: 220px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            box-shadow: 0 4px 8px rgba(0,0,0,.15);
+        }
+
+        .btn-secondary {
+            background: var(--info);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #2980b9;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.9em;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .sidebar {
+            padding: 20px;
+            max-height: 680px;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--light-bg);
+            padding-bottom: 10px;
+        }
+
+        .hallmark-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: var(--light-bg);
+            border: 2px solid transparent;
+            border-radius: 5px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .hallmark-btn:hover {
+            background: #d5dbdb;
+            border-color: var(--primary);
+        }
+
+        .hallmark-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .main-panel {
+            padding: 25px;
+            min-height: 500px;
+        }
+
+        .content-section {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hallmark-title {
+            color: var(--primary);
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 10px;
+        }
+
+        .hallmark-note,
+        .pathway-note,
+        .case-card,
+        .question-feedback {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 6px;
+            line-height: 1.5;
+        }
+
+        .hallmark-note {
+            background: #fef9e7;
+            border-left: 4px solid var(--warning);
+        }
+
+        .pathway-block {
+            background: var(--light-bg);
+            border-left: 4px solid var(--info);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .pathway-name {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .pathway-note {
+            background: #f8f9fa;
+            border-left: 4px solid var(--accent);
+            color: #455a64;
+        }
+
+        .gene-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .gene-tag {
+            background: white;
+            border: 1px solid var(--info);
+            color: var(--info);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .drug-tag {
+            background: var(--success);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 0 6px 6px 0;
+            display: inline-block;
+        }
+
+        .quiz-section {
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-question {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: var(--light-bg);
+            border-radius: 5px;
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--dark-text);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: var(--info);
+            background: #ecf9ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: #d5f4e6;
+        }
+
+        .option.incorrect {
+            border-color: var(--danger);
+            background: #fadbd8;
+        }
+
+        .question-feedback.correct {
+            background: #d5f4e6;
+            border-left: 4px solid var(--success);
+        }
+
+        .question-feedback.incorrect {
+            background: #fadbd8;
+            border-left: 4px solid var(--danger);
+        }
+
+        .question-feedback.neutral {
+            background: #eef6ff;
+            border-left: 4px solid var(--info);
+        }
+
+        .results-section {
+            background: #ecf9ff;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--info);
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .score-card {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .score-number {
+            font-size: 3em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .score-label {
+            font-size: 1.2em;
+            color: var(--muted);
+        }
+
+        .score-meta {
+            margin-top: 8px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .feedback-item,
+        .answer-key-item,
+        .reference-item,
+        .case-card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .feedback-item {
+            border-left: 4px solid var(--info);
+        }
+
+        .feedback-item.weak {
+            border-left-color: var(--danger);
+        }
+
+        .feedback-item.good {
+            border-left-color: var(--success);
+        }
+
+        .answer-key-item.correct {
+            border-left: 4px solid var(--success);
+        }
+
+        .answer-key-item.incorrect {
+            border-left: 4px solid var(--danger);
+        }
+
+        .status-message {
+            padding: 12px 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .status-message.show {
+            display: block;
+        }
+
+        .status-message.success {
+            background: #d5f4e6;
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        .status-message.error {
+            background: #fadbd8;
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        .status-message.info {
+            background: #eef6ff;
+            color: var(--info);
+            border-left: 4px solid var(--info);
+        }
+
+        .reference-list {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 0.92em;
+            line-height: 1.6;
+        }
+
+        .reference-link {
+            color: var(--info);
+            text-decoration: none;
+        }
+
+        .reference-link:hover {
+            text-decoration: underline;
+        }
+
+        .pathway-diagram {
+            background: white;
+            padding: 20px;
+            margin: 18px 0;
+            border-radius: 5px;
+            border: 2px dashed var(--info);
+        }
+
+        .diagram-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .flow-box {
+            background: var(--accent);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .flow-arrow {
+            font-size: 1.5em;
+            color: var(--accent);
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .section-title {
+            color: var(--primary);
+            margin: 20px 0 15px;
+        }
+
+        .small-note {
+            font-size: 0.9em;
+            color: var(--muted);
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .diagram-flow {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔬 VIA - Vida Integrada e Autônoma</h1>
+            <div class="subtitle">Ciência e tecnologia a serviço do cuidado</div>
+            <div class="author">Dr Lucas HR - médico (FMRP-USP / Turma 64)</div>
+            <div class="author">Biologia do Câncer - Vias de Sinalização Oncológica</div>
+        </header>
+
+        <div class="auth-section">
+            <div id="authContainer">
+                <div class="auth-form">
+                    <input type="text" id="studentName" placeholder="Digite seu nome completo" />
+                    <input type="email" id="studentEmail" placeholder="seu.email@usp.br" />
+                    <button class="btn btn-primary" onclick="login()">Entrar</button>
+                </div>
+                <div id="authStatus" class="status-message"></div>
+            </div>
+
+            <div id="sessionInfo" style="display:none; margin-top:10px;">
+                <strong>Sessão ativa:</strong> <span id="sessionUser"></span>
+                <button class="btn btn-secondary btn-small" onclick="logout()" style="float:right;">Sair</button>
+            </div>
+        </div>
+
+        <div class="import-section" id="importSection" style="display:none;">
+            <h3>📥 Importar Banco de Dados</h3>
+            <p style="margin-bottom: 15px; color: #7f8c8d;">
+                Atualize questões, casos clínicos e, se desejar, hallmarks customizadas via JSON estruturado. CSV permanece disponível para quizzes.
+            </p>
+            <div class="file-input-wrapper">
+                <input type="file" id="dbFile" accept=".json,.csv" />
+                <button class="btn btn-secondary btn-small" onclick="importDatabase()">Importar</button>
+                <button class="btn btn-secondary btn-small" onclick="exportTemplate()">Baixar Template</button>
+            </div>
+            <div id="importStatus" class="status-message"></div>
+        </div>
+
+        <div class="main-content" id="mainContent" style="display:none;">
+            <div class="sidebar">
+                <h3>🎯 14 Hallmarks do Câncer</h3>
+                <div id="hallmarksList"></div>
+            </div>
+
+            <div class="main-panel">
+                <div id="contentArea"></div>
+                <div id="casesArea" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <div class="quiz-section" id="quizSection" style="display:none;">
+            <h2 style="color: var(--primary); margin-bottom:20px;">📝 Avaliação: Vias de Sinalização Oncológica</h2>
+            <p class="muted" style="margin-bottom:15px;">
+                Explore os marcos primeiro; depois responda ao quiz. Ao enviar, o sistema exibirá correção comentada, nota e áreas prioritárias de revisão.
+            </p>
+            <div id="quizContainer"></div>
+            <button class="btn btn-success" onclick="submitQuiz()" style="margin-top:20px;">Enviar Respostas</button>
+            <div id="quizStatus" class="status-message"></div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <h2 style="color: var(--primary); margin-bottom:20px;">📊 Seu Relatório de Desempenho</h2>
+
+            <div class="score-card">
+                <div class="score-label">Sua Pontuação</div>
+                <div class="score-number" id="scoreDisplay">0%</div>
+                <div class="score-meta" id="scoreMeta">0/0 acertos</div>
+            </div>
+
+            <h3 class="section-title">Áreas de Fortalecimento Recomendadas</h3>
+            <div id="feedbackContainer"></div>
+
+            <h3 class="section-title">Gabarito Comentado</h3>
+            <div id="answerKeyContainer"></div>
+
+            <h3 class="section-title">Referências Sugeridas</h3>
+            <div class="reference-list" id="referenceContainer"></div>
+
+            <button class="btn btn-success" onclick="exportReport()" style="margin-top:20px;">📄 Exportar Relatório em PDF</button>
+            <div id="resultsStatus" class="status-message"></div>
+        </div>
+
+        <div style="text-align:center; margin-top:30px; display:none;" id="navButtons">
+            <button class="btn btn-primary" onclick="showQuiz()">➜ Ir para Avaliação</button>
+            <button class="btn btn-secondary" onclick="resetApp()">↻ Recomeçar</button>
+        </div>
+    </div>
+
+    <script>
+        const defaultData = {
+            hallmarks: [
+                {
+                    id: 1,
+                    name: "Proliferação Autônoma",
+                    description: "Sustained proliferative signaling",
+                    pathways: [
+                        {
+                            name: "RAS-MAPK",
+                            genes: ["KRAS", "NRAS", "BRAF", "EGFR", "ERBB2 (HER2)"],
+                            drugs: ["Erlotinibe", "Osimertinibe", "Sotorasibe", "Adagrasibe", "Trametinibe"],
+                            note: "Via mitogênica clássica ativada por RTKs. KRAS, NRAS e BRAF são nós centrais da transdução proliferativa."
+                        },
+                        {
+                            name: "PI3K-AKT-mTOR",
+                            genes: ["PIK3CA", "AKT1", "PTEN", "MTOR"],
+                            drugs: ["Alpelisibe", "Capivasertibe", "Everolimo"],
+                            note: "Aqui estão os genes corretos da via de sobrevivência e crescimento. PTEN atua como freio tumoral do eixo PI3K-AKT."
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Evasão de Supressores",
+                    description: "Evading growth suppressors",
+                    pathways: [
+                        {
+                            name: "p53-MDM2",
+                            genes: ["TP53", "MDM2", "MDM4", "ATM", "CHEK2"],
+                            drugs: ["Nutlina-3", "Milademetan", "APR-246"],
+                            note: "O eixo p53 integra dano ao DNA, checkpoint e apoptose. Amplificação de MDM2 pode neutralizar p53 selvagem."
+                        },
+                        {
+                            name: "RB1-CDK4/6",
+                            genes: ["RB1", "CDKN2A", "CCND1", "CDK4", "CDK6"],
+                            drugs: ["Palbociclib", "Ribociclib", "Abemaciclib"],
+                            note: "A perda de RB1 ou p16/CDKN2A remove freios do checkpoint G1/S."
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "Resistência à Apoptose",
+                    description: "Resisting cell death",
+                    pathways: [
+                        {
+                            name: "PI3K-AKT-mTOR",
+                            genes: ["PIK3CA", "AKT1", "AKT2", "PTEN", "FOXO3"],
+                            drugs: ["Capivasertibe", "Ipatasertibe", "Everolimo"],
+                            note: "AKT suprime sinais pró-apoptóticos e favorece sobrevivência celular."
+                        },
+                        {
+                            name: "Apoptose Mitocondrial / p53",
+                            genes: ["TP53", "BCL2", "MCL1", "BAX", "PUMA"],
+                            drugs: ["Venetoclax"],
+                            note: "BCL2 e MCL1 antagonizam a morte celular; p53 ativa efetores pró-apoptóticos."
+                        }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: "Imortalidade Replicativa",
+                    description: "Enabling replicative immortality",
+                    pathways: [
+                        {
+                            name: "Telomerase",
+                            genes: ["TERT", "TERC"],
+                            drugs: ["Imetelstat (GRN163L)"],
+                            note: "A manutenção telomérica sustenta divisões sucessivas em clones tumorais."
+                        },
+                        {
+                            name: "ALT",
+                            genes: ["ATRX", "DAXX"],
+                            drugs: ["Estratégias experimentais em estudo"],
+                            note: "ALT representa mecanismo alternativo de manutenção de telômeros."
+                        }
+                    ]
+                },
+                {
+                    id: 5,
+                    name: "Angiogênese",
+                    description: "Inducing/accessing vasculature",
+                    pathways: [
+                        {
+                            name: "VEGF/VEGFR",
+                            genes: ["VEGFA", "KDR (VEGFR2)", "FLT1 (VEGFR1)"],
+                            drugs: ["Bevacizumabe", "Sunitinibe", "Pazopanibe"],
+                            note: "VEGF é o principal ligante pró-angiogênico e seus receptores orquestram brotamento vascular."
+                        },
+                        {
+                            name: "Hipóxia / HIF-1α",
+                            genes: ["HIF1A", "VHL", "ARNT"],
+                            drugs: ["Estratégias anti-HIF em investigação"],
+                            note: "HIF-1α é fator de transcrição de resposta à hipóxia e induz VEGF; não deve ser confundido com VEGF em si."
+                        }
+                    ]
+                },
+                {
+                    id: 6,
+                    name: "Invasão e Metástase",
+                    description: "Activating invasion & metastasis",
+                    pathways: [
+                        {
+                            name: "EMT (Transição Epitélio-Mesenquimal)",
+                            genes: ["SNAI1", "TWIST1", "ZEB1", "ZEB2", "CDH1"],
+                            drugs: ["Sem terapia-alvo aprovada específica"],
+                            note: "EMT envolve reprogramação transcricional, perda de adesão e aumento de motilidade."
+                        },
+                        {
+                            name: "MET (receptor tirosina-quinase)",
+                            genes: ["MET", "HGF"],
+                            drugs: ["Tepotinibe", "Capmatinibe"],
+                            note: "MET aqui é o receptor tirosina-quinase. Não deve ser confundido com o fenômeno EMT."
+                        }
+                    ]
+                },
+                {
+                    id: 7,
+                    name: "Metabolismo Reprogramado",
+                    description: "Reprogramming cellular metabolism",
+                    pathways: [
+                        {
+                            name: "mTORC1",
+                            genes: ["MTOR", "RPTOR", "S6K", "4EBP1"],
+                            drugs: ["Everolimo", "Temsirolimo"],
+                            note: "mTORC1 favorece anabolismo, síntese proteica e suporte à proliferação rápida."
+                        },
+                        {
+                            name: "Hipóxia / Glicólise Aeróbica",
+                            genes: ["HIF1A", "SLC2A1 (GLUT1)", "LDHA", "PKM2"],
+                            drugs: ["Estratégias metabólicas em investigação"],
+                            note: "O efeito Warburg é sustentado por reprogramação de captação e uso de glicose."
+                        }
+                    ]
+                },
+                {
+                    id: 8,
+                    name: "Evasão Imune",
+                    description: "Avoiding immune destruction",
+                    pathways: [
+                        {
+                            name: "PD-1 / PD-L1",
+                            genes: ["CD274 (PD-L1)", "PDCD1 (PD-1)", "PDCD1LG2 (PD-L2)"],
+                            drugs: ["Nivolumabe", "Pembrolizumabe", "Atezolizumabe"],
+                            note: "O eixo PD-1/PD-L1 reduz a ativação efetora antitumoral."
+                        },
+                        {
+                            name: "CTLA-4",
+                            genes: ["CTLA4", "CD80", "CD86"],
+                            drugs: ["Ipilimumabe"],
+                            note: "CTLA-4 atua precocemente na modulação da ativação de linfócitos T."
+                        }
+                    ]
+                },
+                {
+                    id: 9,
+                    name: "Instabilidade Genômica",
+                    description: "Genome instability & mutation",
+                    pathways: [
+                        {
+                            name: "Resposta a dano ao DNA",
+                            genes: ["ATM", "ATR", "CHEK2", "TP53"],
+                            drugs: ["Estratégias baseadas em dano ao DNA"],
+                            note: "Falhas em checkpoint e reparo ampliam acúmulo mutacional."
+                        },
+                        {
+                            name: "Recombinação Homóloga",
+                            genes: ["BRCA1", "BRCA2", "PALB2"],
+                            drugs: ["Olaparibe", "Niraparibe", "Talazoparibe"],
+                            note: "Defeitos de HR conferem sensibilidade sintética a inibidores de PARP."
+                        }
+                    ]
+                },
+                {
+                    id: 10,
+                    name: "Inflamação Pró-Tumoral",
+                    description: "Tumor-promoting inflammation",
+                    pathways: [
+                        {
+                            name: "NF-κB",
+                            genes: ["NFKB1", "RELA", "TNF"],
+                            drugs: ["Estratégias anti-inflamatórias contextuais"],
+                            note: "NF-κB integra sinais inflamatórios que sustentam crescimento e sobrevivência tumoral."
+                        },
+                        {
+                            name: "IL-6 / STAT3",
+                            genes: ["IL6", "JAK1", "STAT3"],
+                            drugs: ["Tofacitinibe"],
+                            note: "O eixo IL-6/STAT3 reforça inflamação, sobrevivência e escape imune."
+                        }
+                    ]
+                },
+                {
+                    id: 11,
+                    name: "Plasticidade Fenotípica",
+                    description: "Unlocking phenotypic plasticity",
+                    pathways: [
+                        {
+                            name: "EMT e estados híbridos",
+                            genes: ["SNAI1", "TWIST1", "ZEB1", "VIM"],
+                            drugs: ["Estratégias anti-plasticidade em investigação"],
+                            note: "Plasticidade permite alternância entre estados epiteliais, mesenquimais e híbridos."
+                        },
+                        {
+                            name: "Cancer Stem Cells",
+                            genes: ["CD44", "PROM1 (CD133)", "ALDH1A1", "SOX2"],
+                            drugs: ["Salinomicina"],
+                            note: "Salinomicina: uso pré-clínico, não aprovada para uso humano."
+                        }
+                    ],
+                    globalNote: "Plasticidade fenotípica não se reduz a uma única via; resulta de reprogramação dinâmica e contexto microambiental."
+                },
+                {
+                    id: 12,
+                    name: "Reprogramação Epigenética",
+                    description: "Non-mutational epigenetic reprogramming",
+                    pathways: [
+                        {
+                            name: "Desacetilação de Histonas",
+                            genes: ["HDAC1", "HDAC2", "HDAC3"],
+                            drugs: ["Vorinostate", "Romidepsina"],
+                            note: "Alterações de cromatina mudam programas transcricionais sem exigir mutação estrutural."
+                        },
+                        {
+                            name: "Metilação do DNA",
+                            genes: ["DNMT1", "DNMT3A", "TET2"],
+                            drugs: ["Azacitidina", "Decitabina"],
+                            note: "Silenciamento ou reativação gênica epigenética afeta diferenciação e agressividade."
+                        }
+                    ]
+                },
+                {
+                    id: 13,
+                    name: "Microbioma Polimórfico",
+                    description: "Polymorphic microbiomes",
+                    pathways: [
+                        {
+                            name: "Microbiota intestinal e imunidade de mucosa",
+                            genes: ["TLR4", "NOD2", "MYD88"],
+                            drugs: ["FMT (Transplante de Microbiota Fecal)"],
+                            note: "FMT deve ser interpretado aqui como estratégia experimental ou contextual de modulação do microbioma, não como terapia oncológica consolidada."
+                        }
+                    ],
+                    globalNote: "Status experimental: a modulação do microbioma em oncologia ainda é campo em evolução; probióticos não substituem o conceito central deste hallmark."
+                },
+                {
+                    id: 14,
+                    name: "Senescência Pro-tumoral",
+                    description: "Senescent cells",
+                    pathways: [
+                        {
+                            name: "p21 / p16",
+                            genes: ["CDKN1A", "CDKN2A", "RB1"],
+                            drugs: ["Estratégias senolíticas em investigação"],
+                            note: "A senescência pode ser antitumoral inicialmente, mas células senescentes persistentes alimentam o microambiente."
+                        },
+                        {
+                            name: "SASP",
+                            genes: ["IL6", "CXCL8", "MMPs"],
+                            drugs: ["Dasatinibe + Quercetina (contexto senolítico experimental)"],
+                            note: "SASP contribui para inflamação, remodelamento e facilitação tumoral."
+                        }
+                    ]
+                }
+            ],
+            quizzes: [
+                {
+                    id: 1,
+                    question: "Qual via de sinalização é essencial para transdução de sinal mitogênico desde receptores de fatores de crescimento?",
+                    options: ["RAS-MAPK", "Wnt/β-catenina", "Notch", "Hedgehog"],
+                    correct: 0,
+                    hallmark: 1,
+                    explanation: "RAS-MAPK é a cascata clássica de transdução de sinal proliferativo a partir de RTKs como EGFR, FGFR e HER2."
+                },
+                {
+                    id: 2,
+                    question: "No contexto da proliferação autônoma, quais genes caracterizam melhor a via PI3K-AKT-mTOR?",
+                    options: [
+                        "KRAS, NRAS, BRAF e EGFR",
+                        "PIK3CA, AKT1, PTEN e MTOR",
+                        "TP53, RB1, CDKN2A e MDM2",
+                        "BRCA1, BRCA2, ATM e CHEK2"
+                    ],
+                    correct: 1,
+                    hallmark: 1,
+                    explanation: "PIK3CA, AKT1, PTEN e MTOR representam o eixo PI3K-AKT-mTOR; KRAS/NRAS/BRAF/EGFR pertencem ao núcleo canônico de RAS-MAPK."
+                },
+                {
+                    id: 3,
+                    question: "Qual é a função primária de p53 diante de dano ao DNA?",
+                    options: [
+                        "Amplificar o dano genético",
+                        "Orquestrar parada do ciclo, reparo ou apoptose",
+                        "Aumentar proliferação",
+                        "Promover metástase"
+                    ],
+                    correct: 1,
+                    hallmark: 2,
+                    explanation: "p53 coordena checkpoint, reparo, senescência ou apoptose, sendo conhecido como guardião do genoma."
+                },
+                {
+                    id: 4,
+                    question: "PTEN atua como freio principal de qual via oncogênica?",
+                    options: ["RAS-MAPK", "PI3K-AKT-mTOR", "Notch", "Hedgehog"],
+                    correct: 1,
+                    hallmark: 3,
+                    explanation: "PTEN desfosforila PIP3 para PIP2, opondo-se diretamente à ativação de AKT."
+                },
+                {
+                    id: 5,
+                    question: "Em angiogênese tumoral, qual afirmação melhor distingue VEGF de HIF-1α?",
+                    options: [
+                        "VEGF é fator de transcrição e HIF-1α é receptor de membrana",
+                        "VEGF é ligante pró-angiogênico; HIF-1α é regulador transcricional de resposta à hipóxia",
+                        "VEGF e HIF-1α são sinônimos funcionais",
+                        "HIF-1α atua apenas em células imunes"
+                    ],
+                    correct: 1,
+                    hallmark: 5,
+                    explanation: "VEGF funciona como ligante pró-angiogênico; HIF-1α atua no núcleo, regulando a expressão de genes como VEGFA em resposta à hipóxia."
+                },
+                {
+                    id: 6,
+                    question: "Na hallmark de invasão e metástase, qual alternativa separa corretamente EMT de MET receptor?",
+                    options: [
+                        "EMT corresponde ao receptor MET ativado por HGF",
+                        "EMT envolve SNAI1/TWIST/ZEB; MET é receptor tirosina-quinase distinto",
+                        "EMT e MET são exatamente o mesmo processo",
+                        "MET é fator de transcrição do EMT"
+                    ],
+                    correct: 1,
+                    hallmark: 6,
+                    explanation: "EMT é programa de transição celular regulado por fatores como SNAI1, TWIST e ZEB; MET, por sua vez, é um receptor tirosina-quinase."
+                },
+                {
+                    id: 7,
+                    question: "Qual fármaco deve ser associado ao eixo CTLA-4 na evasão imune?",
+                    options: ["Pembrolizumabe", "Atezolizumabe", "Ipilimumabe", "Olaparibe"],
+                    correct: 2,
+                    hallmark: 8,
+                    explanation: "Ipilimumabe é o inibidor clássico de CTLA-4; pembrolizumabe e atezolizumabe pertencem a outros checkpoints."
+                },
+                {
+                    id: 8,
+                    question: "Qual hallmark está mais associado à perda de função de RB1?",
+                    options: [
+                        "Metabolismo reprogramado",
+                        "Evasão de supressores do crescimento",
+                        "Imortalidade replicativa",
+                        "Angiogênese"
+                    ],
+                    correct: 1,
+                    hallmark: 2,
+                    explanation: "RB1 regula o checkpoint G1/S; sua perda facilita escape dos supressores de crescimento."
+                }
+            ],
+            cases: [
+                {
+                    id: 1,
+                    title: "Caso Integrador 1",
+                    stem: "Adenocarcinoma pulmonar com mutação em EGFR, proliferação sustentada e sensibilidade inicial a TKI.",
+                    focus: "Relacionar RTK, RAS-MAPK, resistência adaptativa e alvo terapêutico.",
+                    hallmarks: [1]
+                },
+                {
+                    id: 2,
+                    title: "Caso Integrador 2",
+                    stem: "Carcinoma endometrial com perda de PTEN e ativação metabólica tumoral.",
+                    focus: "Conectar PI3K-AKT-mTOR, sobrevivência, metabolismo reprogramado e opções-alvo.",
+                    hallmarks: [1, 3, 7]
+                },
+                {
+                    id: 3,
+                    title: "Caso Integrador 3",
+                    stem: "Tumor sólido hipóxico com expressão aumentada de HIF-1α e neovascularização exuberante.",
+                    focus: "Distinguir eixo hipóxia-HIF do eixo VEGF/VEGFR.",
+                    hallmarks: [5]
+                },
+                {
+                    id: 4,
+                    title: "Caso Integrador 4",
+                    stem: "Melanoma metastático com uso de bloqueio de checkpoint imune.",
+                    focus: "Comparar PD-1/PD-L1 versus CTLA-4 e seus fármacos.",
+                    hallmarks: [8]
+                }
+            ]
+        };
+
+        let hallmarksData = JSON.parse(JSON.stringify(defaultData));
+        let lastQuizResults = [];
+
+        function escapeHtml(value) {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function uniqueArray(arr) {
+            return [...new Set((arr || []).filter(Boolean))];
+        }
+
+        function normalizeHallmarks(rawHallmarks) {
+            const uniqueById = new Map();
+
+            (rawHallmarks || []).forEach(item => {
+                if (!item || item.id == null) return;
+                const hallmarkId = Number(item.id);
+                if (uniqueById.has(hallmarkId)) return;
+
+                const normalizedPathways = Array.isArray(item.pathways)
+                    ? item.pathways.map(pathway => {
+                        if (typeof pathway === "string") {
+                            return {
+                                name: pathway,
+                                genes: Array.isArray(item.genes) ? uniqueArray(item.genes) : [],
+                                drugs: Array.isArray(item.drugs) ? uniqueArray(item.drugs) : [],
+                                note: item.note || ""
+                            };
+                        }
+
+                        return {
+                            name: pathway.name || "Via não nomeada",
+                            genes: uniqueArray(pathway.genes || []),
+                            drugs: uniqueArray(pathway.drugs || []),
+                            note: pathway.note || ""
+                        };
+                    })
+                    : [];
+
+                uniqueById.set(hallmarkId, {
+                    id: hallmarkId,
+                    name: item.name || `Hallmark ${hallmarkId}`,
+                    description: item.description || "",
+                    pathways: normalizedPathways,
+                    globalNote: item.globalNote || ""
+                });
+            });
+
+            return Array.from(uniqueById.values()).sort((a, b) => a.id - b.id);
+        }
+
+        function normalizeQuizzes(rawQuizzes) {
+            return (rawQuizzes || [])
+                .filter(q => q && q.id != null && q.question && Array.isArray(q.options) && q.options.length >= 2)
+                .map(q => ({
+                    id: Number(q.id),
+                    question: q.question,
+                    options: q.options.map(opt => String(opt)),
+                    correct: Number(q.correct || 0),
+                    hallmark: Number(q.hallmark || 1),
+                    explanation: q.explanation || "Reveja o racional conceitual desta questão."
+                }))
+                .sort((a, b) => a.id - b.id);
+        }
+
+        function normalizeCases(rawCases) {
+            return (rawCases || [])
+                .filter(c => c && c.id != null && c.title)
+                .map(c => ({
+                    id: Number(c.id),
+                    title: c.title,
+                    stem: c.stem || "",
+                    focus: c.focus || "",
+                    hallmarks: Array.isArray(c.hallmarks) ? c.hallmarks.map(Number) : []
+                }))
+                .sort((a, b) => a.id - b.id);
+        }
+
+        function getStoredCustomData() {
+            try {
+                if (typeof localStorage === "undefined" || localStorage === null) {
+                    console.warn("localStorage não está disponível");
+                    return null;
+                }
+                const raw = localStorage.getItem("via_custom_data");
+                return raw ? JSON.parse(raw) : null;
+            } catch {
+                console.warn("Erro ao acessar localStorage");
+                return null;
+            }
+        }
+
+        function saveCustomData(data) {
+            try {
+                if (typeof localStorage === "undefined" || localStorage === null) {
+                    console.warn("localStorage não está disponível");
+                    return false;
+                }
+                localStorage.setItem("via_custom_data", JSON.stringify(data));
+                return true;
+            } catch {
+                console.warn("Erro ao salvar em localStorage");
+                return false;
+            }
+        }
+
+        function loadCustomData() {
+            hallmarksData = JSON.parse(JSON.stringify(defaultData));
+
+            const customData = getStoredCustomData();
+            const legacyQuizzes = localStorage.getItem("via_custom_quizzes");
+
+            if (customData) {
+                if (Array.isArray(customData.hallmarks) && customData.hallmarks.length > 0) {
+                    hallmarksData.hallmarks = customData.hallmarks;
+                }
+                if (Array.isArray(customData.quizzes) && customData.quizzes.length > 0) {
+                    hallmarksData.quizzes = customData.quizzes;
+                }
+                if (Array.isArray(customData.cases)) {
+                    hallmarksData.cases = customData.cases;
+                }
+            } else if (legacyQuizzes) {
+                try {
+                    hallmarksData.quizzes = JSON.parse(legacyQuizzes);
+                } catch {
+                }
+            }
+
+            hallmarksData.hallmarks = normalizeHallmarks(hallmarksData.hallmarks);
+            hallmarksData.quizzes = normalizeQuizzes(hallmarksData.quizzes);
+            hallmarksData.cases = normalizeCases(hallmarksData.cases);
+        }
+
+        function buildPersistedData() {
+            return {
+                hallmarks: hallmarksData.hallmarks,
+                quizzes: hallmarksData.quizzes,
+                cases: hallmarksData.cases
+            };
+        }
+        function login() {
+            const name = document.getElementById("studentName").value.trim();
+            const email = document.getElementById("studentEmail").value.trim();
+
+            if (!name || !email) {
+                showStatus("authStatus", "Por favor, preencha nome e email.", "error");
+                return;
+            }
+
+            try {
+                localStorage.setItem("via_student_name", name);
+                localStorage.setItem("via_student_email", email);
+                localStorage.setItem("via_session_active", "true");
+            } catch (err) {
+                console.warn("localStorage indisponível:", err);
+                showStatus("authStatus", "Aviso: Dados não serão persistidos (localStorage indisponível).", "info");
+            }
+
+            showStatus("authStatus", `Bem-vindo, ${name}!`, "success");
+
+            setTimeout(() => {
+                activateSessionUI(name, email);
+            }, 700);
+        }
+
+        function activateSessionUI(name, email) {
+            document.getElementById("authContainer").style.display = "none";
+            document.getElementById("sessionInfo").style.display = "block";
+            document.getElementById("sessionUser").textContent = `${name} (${email})`;
+
+            document.getElementById("importSection").style.display = "block";
+            document.getElementById("mainContent").style.display = "grid";
+            document.getElementById("quizSection").style.display = "none";
+            document.getElementById("resultsSection").classList.remove("show");
+            document.getElementById("navButtons").style.display = "block";
+
+            loadCustomData();
+            initializeApp();
+        }
+
+        function logout() {
+            try {
+                localStorage.removeItem("via_student_name");
+                localStorage.removeItem("via_student_email");
+                localStorage.removeItem("via_session_active");
+                localStorage.removeItem("via_quiz_score");
+                localStorage.removeItem("via_quiz_hits");
+                localStorage.removeItem("via_quiz_total");
+                localStorage.removeItem("via_weak_areas");
+                localStorage.removeItem("via_quiz_details");
+            } catch (err) {
+                console.warn("Erro ao limpar localStorage:", err);
+            }
+            location.reload();
+        }
+
+        function initializeApp() {
+            renderHallmarks();
+            renderFirstHallmark();
+        }
+
+        function renderHallmarks() {
+            const container = document.getElementById("hallmarksList");
+            container.innerHTML = "";
+
+            hallmarksData.hallmarks.forEach((hallmark, index) => {
+                const btn = document.createElement("button");
+                btn.className = "hallmark-btn" + (index === 0 ? " active" : "");
+                btn.textContent = `${hallmark.id}. ${hallmark.name}`;
+                btn.onclick = () => selectHallmark(index);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectHallmark(index) {
+            document.querySelectorAll(".hallmark-btn").forEach((btn, i) => {
+                btn.classList.toggle("active", i === index);
+            });
+
+            renderHallmarkContent(index);
+        }
+
+        function renderFirstHallmark() {
+            selectHallmark(0);
+        }
+
+        function renderHallmarkContent(index) {
+            const hallmark = hallmarksData.hallmarks[index];
+            const contentArea = document.getElementById("contentArea");
+
+            if (!hallmark) {
+                contentArea.innerHTML = "<p>Nenhum conteúdo disponível.</p>";
+                return;
+            }
+
+            let html = `
+                <div class="content-section active">
+                    <div class="hallmark-title">${escapeHtml(hallmark.id)}. ${escapeHtml(hallmark.name)}</div>
+                    <p style="margin-bottom: 15px; color: #555;"><em>${escapeHtml(hallmark.description)}</em></p>
+            `;
+
+            if (hallmark.globalNote) {
+                html += `<div class="hallmark-note"><strong>Nota didática:</strong> ${escapeHtml(hallmark.globalNote)}</div>`;
+            }
+
+            html += `<h4 style="color: var(--accent); margin-top: 20px; margin-bottom: 10px;">🛤️ Vias de Sinalização Envolvidas</h4>`;
+
+            hallmark.pathways.forEach(pathway => {
+                html += `
+                    <div class="pathway-block">
+                        <div class="pathway-name">${escapeHtml(pathway.name)}</div>
+                        <strong>Genes-chave:</strong>
+                        <div class="gene-list">
+                            ${pathway.genes.map(gene => `<span class="gene-tag">${escapeHtml(gene)}</span>`).join("")}
+                        </div>
+                        <strong>Fármacos direcionados:</strong>
+                        <div style="margin-top: 8px;">
+                            ${pathway.drugs.map(drug => `<span class="drug-tag">${escapeHtml(drug)}</span>`).join("")}
+                        </div>
+                        ${pathway.note ? `<div class="pathway-note"><strong>Comentário:</strong> ${escapeHtml(pathway.note)}</div>` : ""}
+                    </div>
+                `;
+            });
+
+            html += `
+                <div class="pathway-diagram">
+                    <strong>Diagrama Conceitual</strong>
+                    <div class="diagram-flow" style="margin-top: 15px;">
+                        <div class="flow-box">Mutação</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box">Desregulação de Via</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box">Ganho/Perda de Função</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box">Hallmark Adquirida</div>
+                    </div>
+                </div>
+            </div>
+            `;
+
+            contentArea.innerHTML = html;
+            renderCasesForHallmark(hallmark.id);
+        }
+
+        function renderCasesForHallmark(hallmarkId) {
+            const casesArea = document.getElementById("casesArea");
+            const relatedCases = hallmarksData.cases.filter(c => !c.hallmarks.length || c.hallmarks.includes(hallmarkId));
+
+            if (!relatedCases.length) {
+                casesArea.innerHTML = `
+                    <h4 class="section-title">🧩 Casos Integradores</h4>
+                    <p class="muted">Nenhum caso específico cadastrado para esta hallmark.</p>
+                `;
+                return;
+            }
+
+            casesArea.innerHTML = `
+                <h4 class="section-title">🧩 Casos Integradores</h4>
+                ${relatedCases.map(c => `
+                    <div class="case-card">
+                        <strong>${escapeHtml(c.title)}</strong>
+                        <p style="margin-top:8px;"><strong>Situação:</strong> ${escapeHtml(c.stem)}</p>
+                        <p style="margin-top:6px;"><strong>Foco didático:</strong> ${escapeHtml(c.focus)}</p>
+                    </div>
+                `).join("")}
+            `;
+        }
+
+        function showQuiz() {
+            document.getElementById("mainContent").scrollIntoView({ behavior: "smooth" });
+            setTimeout(() => {
+                document.getElementById("mainContent").style.display = "none";
+                document.getElementById("quizSection").style.display = "block";
+                document.getElementById("resultsSection").classList.remove("show");
+                renderQuiz();
+                document.getElementById("quizSection").scrollIntoView({ behavior: "smooth" });
+            }, 250);
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById("quizContainer");
+            container.innerHTML = "";
+
+            hallmarksData.quizzes.forEach((q, index) => {
+                const questionDiv = document.createElement("div");
+                questionDiv.className = "quiz-question";
+                questionDiv.id = `question-${q.id}`;
+
+                questionDiv.innerHTML = `
+                    <div class="question-text">${index + 1}. ${escapeHtml(q.question)}</div>
+                    <div class="options">
+                        ${q.options.map((opt, i) => `
+                            <label class="option" data-option-index="${i}">
+                                <input type="radio" name="q${q.id}" value="${i}" />
+                                <span>${escapeHtml(opt)}</span>
+                            </label>
+                        `).join("")}
+                    </div>
+                    <div class="question-feedback neutral" id="feedback-q${q.id}" style="display:none;"></div>
+                `;
+
+                container.appendChild(questionDiv);
+            });
+
+            showStatus("quizStatus", "Responda e clique em 'Enviar Respostas' para visualizar a correção comentada.", "info");
+        }
+
+        function submitQuiz() {
+            if (!hallmarksData.quizzes.length) {
+                showStatus("quizStatus", "Não há questões disponíveis para correção.", "error");
+                return;
+            }
+
+            let score = 0;
+            let unanswered = 0;
+            const weakAreas = {};
+            const results = [];
+
+            hallmarksData.quizzes.forEach((q, index) => {
+                const questionCard = document.getElementById(`question-${q.id}`);
+                const options = Array.from(questionCard.querySelectorAll(".option"));
+                const selectedInput = questionCard.querySelector(`input[name="q${q.id}"]:checked`);
+                const feedbackEl = document.getElementById(`feedback-q${q.id}`);
+
+                options.forEach(opt => opt.classList.remove("correct", "incorrect"));
+
+                let isCorrect = false;
+                let selectedIndex = null;
+
+                if (selectedInput) {
+                    selectedIndex = Number(selectedInput.value);
+                    isCorrect = selectedIndex === q.correct;
+
+                    if (isCorrect) {
+                        score++;
+                    } else {
+                        addWeakArea(weakAreas, q.hallmark, q.explanation);
+                    }
+
+                    options.forEach(opt => {
+                        const optionIndex = Number(opt.dataset.optionIndex);
+                        if (optionIndex === q.correct) opt.classList.add("correct");
+                        if (optionIndex === selectedIndex && selectedIndex !== q.correct) opt.classList.add("incorrect");
+                    });
+
+                    feedbackEl.className = `question-feedback ${isCorrect ? "correct" : "incorrect"}`;
+                    feedbackEl.style.display = "block";
+                    feedbackEl.innerHTML = `
+                        <strong>${isCorrect ? "✓ Correto" : "✗ Incorreto"}</strong><br/>
+                        <span><strong>Resposta correta:</strong> ${escapeHtml(q.options[q.correct])}</span><br/>
+                        <span><strong>Comentário:</strong> ${escapeHtml(q.explanation)}</span>
+                    `;
+                } else {
+                    unanswered++;
+                    addWeakArea(weakAreas, q.hallmark, q.explanation);
+
+                    options.forEach(opt => {
+                        const optionIndex = Number(opt.dataset.optionIndex);
+                        if (optionIndex === q.correct) opt.classList.add("correct");
+                    });
+
+                    feedbackEl.className = "question-feedback neutral";
+                    feedbackEl.style.display = "block";
+                    feedbackEl.innerHTML = `
+                        <strong>• Sem resposta</strong><br/>
+                        <span><strong>Resposta correta:</strong> ${escapeHtml(q.options[q.correct])}</span><br/>
+                        <span><strong>Comentário:</strong> ${escapeHtml(q.explanation)}</span>
+                    `;
+                }
+
+                questionCard.querySelectorAll("input").forEach(input => input.disabled = true);
+
+                results.push({
+                    questionNumber: index + 1,
+                    question: q.question,
+                    selectedIndex,
+                    selectedText: selectedIndex == null ? "Não respondida" : q.options[selectedIndex],
+                    correctIndex: q.correct,
+                    correctText: q.options[q.correct],
+                    explanation: q.explanation,
+                    hallmark: q.hallmark,
+                    isCorrect
+                });
+            });
+
+            const percentage = Math.round((score / hallmarksData.quizzes.length) * 100);
+
+            lastQuizResults = results;
+            try {
+                localStorage.setItem("via_quiz_score", String(percentage));
+                localStorage.setItem("via_quiz_hits", String(score));
+                localStorage.setItem("via_quiz_total", String(hallmarksData.quizzes.length));
+                localStorage.setItem("via_weak_areas", JSON.stringify(weakAreas));
+                localStorage.setItem("via_quiz_details", JSON.stringify(results));
+            } catch (err) {
+                console.warn("Aviso: Resultados não foram salvos em localStorage:", err);
+            }
+
+            if (unanswered > 0) {
+                showStatus("quizStatus", `Correção concluída. ${unanswered} questão(ões) ficaram sem resposta, mas a nota já foi calculada.`, "info");
+            } else {
+                showStatus("quizStatus", "Correção concluída com sucesso. A nota final já está disponível abaixo.", "success");
+            }
+
+            showResults(percentage, score, weakAreas, results);
+        }
+
+        function addWeakArea(store, hallmarkId, explanation) {
+            if (!store[hallmarkId]) {
+                store[hallmarkId] = [];
+            }
+            if (!store[hallmarkId].includes(explanation)) {
+                store[hallmarkId].push(explanation);
+            }
+        }
+
+        function getRecommendedReferences() {
+            return [
+                {
+                    label: "[1]",
+                    citation: "Hanahan D. Hallmarks of cancer: new dimensions. Cancer Discovery. 2022;12(1):31-46.",
+                    url: "https://pubmed.ncbi.nlm.nih.gov/35022204/"
+                },
+                {
+                    label: "[2]",
+                    citation: "Vogelstein B, Papadopoulos N, Velculescu VE, Zhou S, Diaz LA Jr, Kinzler KW. Cancer genome landscapes. Science. 2013;339(6127):1546-1558.",
+                    url: "https://pubmed.ncbi.nlm.nih.gov/23539594/"
+                },
+                {
+                    label: "[3]",
+                    citation: "Sanchez-Vega F, Mina M, Armenia J, et al. Oncogenic signaling pathways in The Cancer Genome Atlas. Cell. 2018;173(2):321-337.e10.",
+                    url: "https://pubmed.ncbi.nlm.nih.gov/29625050/"
+                },
+                {
+                    label: "[4]",
+                    citation: "Hanahan D, Weinberg RA. Hallmarks of cancer: the next generation. Cell. 2011;144(5):646-674.",
+                    url: "https://pubmed.ncbi.nlm.nih.gov/21376230/"
+                }
+            ];
+        }
+
+        function renderReferences() {
+            const refs = getRecommendedReferences();
+            document.getElementById("referenceContainer").innerHTML = refs.map(ref => `
+                <div class="reference-item">
+                    <strong>${escapeHtml(ref.label)}</strong> ${escapeHtml(ref.citation)}
+                    <br/><a href="${escapeHtml(ref.url)}" target="_blank" class="reference-link">🔗 PubMed</a>
+                </div>
+            `).join("");
+        }
+        function showResults(percentage, score, weakAreas, results) {
+            document.getElementById("resultsSection").classList.add("show");
+            document.getElementById("scoreDisplay").textContent = `${percentage}%`;
+            document.getElementById("scoreMeta").textContent = `${score}/${hallmarksData.quizzes.length} acertos`;
+
+            const feedbackContainer = document.getElementById("feedbackContainer");
+            feedbackContainer.innerHTML = "";
+
+            const weakHallmarks = Object.keys(weakAreas).map(id => {
+                const hallmark = hallmarksData.hallmarks.find(h => h.id === Number(id));
+                return {
+                    id: Number(id),
+                    name: hallmark ? hallmark.name : `Hallmark ${id}`,
+                    suggestions: weakAreas[id]
+                };
+            });
+
+            if (weakHallmarks.length === 0) {
+                feedbackContainer.innerHTML = `
+                    <div class="feedback-item good">
+                        <strong>✓ Excelente desempenho!</strong>
+                        <p style="margin-top: 8px;">Você demonstrou compreensão integrada das vias de sinalização, dos genes-chave e das conexões entre hallmarks.</p>
+                    </div>
+                `;
+            } else {
+                weakHallmarks.forEach(area => {
+                    feedbackContainer.innerHTML += `
+                        <div class="feedback-item weak">
+                            <strong>📍 ${escapeHtml(area.name)}</strong>
+                            <p style="margin-top: 8px;">${escapeHtml(area.suggestions.join(" / "))}</p>
+                        </div>
+                    `;
+                });
+            }
+
+            const answerKeyContainer = document.getElementById("answerKeyContainer");
+            answerKeyContainer.innerHTML = results.map(result => `
+                <div class="answer-key-item ${result.isCorrect ? "correct" : "incorrect"}">
+                    <strong>Questão ${result.questionNumber}</strong>
+                    <p style="margin-top:8px;"><strong>Pergunta:</strong> ${escapeHtml(result.question)}</p>
+                    <p style="margin-top:6px;"><strong>Sua resposta:</strong> ${escapeHtml(result.selectedText)}</p>
+                    <p style="margin-top:6px;"><strong>Resposta correta:</strong> ${escapeHtml(result.correctText)}</p>
+                    <p style="margin-top:6px;"><strong>Comentário:</strong> ${escapeHtml(result.explanation)}</p>
+                </div>
+            `).join("");
+
+            renderReferences();
+            document.getElementById("resultsSection").scrollIntoView({ behavior: "smooth" });
+        }
+
+        function exportReport() {
+            try {
+                const studentName = localStorage.getItem("via_student_name") || "Aluno";
+                const studentEmail = localStorage.getItem("via_student_email") || "";
+                const score = localStorage.getItem("via_quiz_score") || "0";
+                const hits = localStorage.getItem("via_quiz_hits") || "0";
+                const total = localStorage.getItem("via_quiz_total") || String(hallmarksData.quizzes.length);
+                const weakAreas = JSON.parse(localStorage.getItem("via_weak_areas") || "{}");
+                const storedDetails = JSON.parse(localStorage.getItem("via_quiz_details") || "[]");
+                const details = storedDetails.length ? storedDetails : lastQuizResults;
+                const refs = getRecommendedReferences();
+
+                const weakHtml = Object.keys(weakAreas).length === 0
+                    ? `<p style="color:#27ae60;"><strong>Desempenho excelente.</strong> O aluno demonstrou integração consistente entre vias, genes e hallmarks.</p>`
+                    : `
+                        <ul>
+                            ${Object.keys(weakAreas).map(id => {
+                                const hallmark = hallmarksData.hallmarks.find(h => h.id === Number(id));
+                                const hallmarkName = hallmark ? hallmark.name : `Hallmark ${id}`;
+                                return `<li><strong>${escapeHtml(hallmarkName)}:</strong> ${escapeHtml(weakAreas[id].join(" / "))}</li>`;
+                            }).join("")}
+                        </ul>
+                    `;
+
+                const answerKeyHtml = details.map(item => `
+                    <div style="border-left: 4px solid ${item.isCorrect ? "#27ae60" : "#e74c3c"}; background: #fff; padding: 12px; border-radius: 6px; margin-bottom: 10px;">
+                        <strong>Questão ${escapeHtml(item.questionNumber)}</strong>
+                        <p style="margin-top:6px;"><strong>Pergunta:</strong> ${escapeHtml(item.question)}</p>
+                        <p style="margin-top:6px;"><strong>Resposta do aluno:</strong> ${escapeHtml(item.selectedText)}</p>
+                        <p style="margin-top:6px;"><strong>Gabarito:</strong> ${escapeHtml(item.correctText)}</p>
+                        <p style="margin-top:6px;"><strong>Comentário:</strong> ${escapeHtml(item.explanation)}</p>
+                    </div>
+                `).join("");
+
+                const refsHtml = refs.map(ref => `
+                    <li style="margin-bottom: 8px;">
+                        ${escapeHtml(ref.citation)}<br/>
+                        <span style="color:#3498db;">${escapeHtml(ref.url)}</span>
+                    </li>
+                `).join("");
+
+                const reportContent = `
+                    <div id="pdfReport" style="padding: 30px; font-family: Arial, sans-serif; line-height: 1.6; color: #2c3e50;">
+                        <h1 style="text-align:center; color:#1e3c72; margin-bottom: 4px;">VIA - Vida Integrada e Autônoma</h1>
+                        <p style="text-align:center; color:#2a5298; margin: 0 0 4px 0;">Ciência e tecnologia a serviço do cuidado</p>
+                        <p style="text-align:center; color:#7f8c8d; margin: 0 0 20px 0;">Dr Lucas HR - médico (FMRP-USP / Turma 64)</p>
+
+                        <hr style="border:none; border-top: 2px solid #1e3c72; margin: 18px 0;" />
+
+                        <h2 style="color:#1e3c72;">Relatório de Desempenho</h2>
+                        <p><strong>Nome:</strong> ${escapeHtml(studentName)}</p>
+                        <p><strong>Email:</strong> ${escapeHtml(studentEmail)}</p>
+                        <p><strong>Data:</strong> ${escapeHtml(new Date().toLocaleDateString("pt-BR"))}</p>
+
+                        <h3 style="color:#1e3c72; margin-top: 24px;">Resultado Geral</h3>
+                        <p style="font-size: 22px; color:#1e3c72;"><strong>Pontuação: ${escapeHtml(score)}%</strong></p>
+                        <p><strong>Acertos:</strong> ${escapeHtml(hits)}/${escapeHtml(total)}</p>
+
+                        <h3 style="color:#1e3c72; margin-top: 24px;">Devolutiva Pedagógica</h3>
+                        ${weakHtml}
+
+                        <h3 style="color:#1e3c72; margin-top: 24px;">Gabarito Comentado</h3>
+                        ${answerKeyHtml}
+
+                        <h3 style="color:#1e3c72; margin-top: 24px;">Referências Recomendadas</h3>
+                        <ol>${refsHtml}</ol>
+
+                        <hr style="border:none; border-top: 1px solid #bdc3c7; margin: 24px 0;" />
+                        <p style="text-align:center; color:#7f8c8d; font-size: 0.9em;">
+                            Relatório gerado automaticamente pelo sistema VIA<br/>
+                            Disciplina: Biologia do Câncer (FMRP-USP)
+                        </p>
+                    </div>
+                `;
+
+                const wrapper = document.createElement("div");
+                wrapper.innerHTML = reportContent;
+                wrapper.style.position = "fixed";
+                wrapper.style.left = "-9999px";
+                wrapper.style.top = "0";
+                document.body.appendChild(wrapper);
+
+                const options = {
+                    margin: 10,
+                    filename: `VIA_Relatorio_${studentName.replace(/\s+/g, "_")}_${new Date().toISOString().split("T")[0]}.pdf`,
+                    image: { type: "jpeg", quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+                };
+
+                try {
+                    html2pdf()
+                        .set(options)
+                        .from(wrapper.querySelector("#pdfReport"))
+                        .save()
+                        .then(() => {
+                            if (document.body.contains(wrapper)) {
+                                document.body.removeChild(wrapper);
+                            }
+                            showStatus("resultsStatus", "Relatório exportado com sucesso.", "success");
+                        })
+                        .catch((err) => {
+                            console.error("Erro ao gerar PDF:", err);
+                            if (document.body.contains(wrapper)) {
+                                document.body.removeChild(wrapper);
+                            }
+                            showStatus("resultsStatus", "Não foi possível exportar o PDF. Tente novamente.", "error");
+                        });
+                } catch (error) {
+                    console.error("Erro ao iniciar exportação:", error);
+                    if (document.body.contains(wrapper)) {
+                        document.body.removeChild(wrapper);
+                    }
+                    showStatus("resultsStatus", "Erro ao exportar relatório.", "error");
+                }
+            } catch (error) {
+                console.error("Erro em exportReport:", error);
+                showStatus("resultsStatus", "Erro ao preparar relatório.", "error");
+            }
+        }
+
+        function importDatabase() {
+            const file = document.getElementById("dbFile").files[0];
+            if (!file) {
+                showStatus("importStatus", "Selecione um arquivo primeiro.", "error");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                try {
+                    let nextData = buildPersistedData();
+
+                    if (file.name.toLowerCase().endsWith(".json")) {
+                        const imported = JSON.parse(e.target.result);
+
+                        if (Array.isArray(imported.hallmarks) && imported.hallmarks.length > 0) {
+                            nextData.hallmarks = normalizeHallmarks(imported.hallmarks);
+                        }
+
+                        if (Array.isArray(imported.quizzes) && imported.quizzes.length > 0) {
+                            nextData.quizzes = normalizeQuizzes(imported.quizzes);
+                        }
+
+                        if (Array.isArray(imported.cases)) {
+                            nextData.cases = normalizeCases(imported.cases);
+                        }
+
+                        hallmarksData = JSON.parse(JSON.stringify(nextData));
+                        saveCustomData(nextData);
+
+                        showStatus(
+                            "importStatus",
+                            `✓ Importação concluída: ${nextData.hallmarks.length} hallmarks, ${nextData.quizzes.length} questões e ${nextData.cases.length} casos.`,
+                            "success"
+                        );
+                    } else if (file.name.toLowerCase().endsWith(".csv")) {
+                        const parsed = Papa.parse(e.target.result, {
+                            header: true,
+                            skipEmptyLines: true
+                        });
+
+                        if (!parsed.data || parsed.data.length === 0) {
+                            showStatus("importStatus", "Arquivo CSV vazio ou inválido.", "error");
+                            return;
+                        }
+
+                        const importedQuizzes = parsed.data
+                            .filter(row => row.question && row.question.trim())
+                            .map((row, idx) => {
+                                const options = [
+                                    (row.option1 || "").trim(),
+                                    (row.option2 || "").trim(),
+                                    (row.option3 || "").trim(),
+                                    (row.option4 || "").trim()
+                                ];
+                                
+                                if (options.some(opt => !opt)) {
+                                    console.warn(`Linha ${idx + 1}: opções incompletas, pulando`);
+                                    return null;
+                                }
+
+                                return {
+                                    id: Number(row.id || idx + 1),
+                                    question: row.question.trim(),
+                                    options,
+                                    correct: Math.min(Math.max(Number(row.correct || 0), 0), 3),
+                                    hallmark: Math.max(Number(row.hallmark || 1), 1),
+                                    explanation: (row.explanation || "Reveja o racional conceitual desta questão.").trim()
+                                };
+                            })
+                            .filter(q => q !== null);
+
+                        if (importedQuizzes.length === 0) {
+                            showStatus("importStatus", "Nenhuma questão válida foi encontrada no CSV.", "error");
+                            return;
+                        }
+
+                        nextData.quizzes = normalizeQuizzes(importedQuizzes);
+                        hallmarksData = JSON.parse(JSON.stringify(nextData));
+                        saveCustomData(nextData);
+                        try {
+                            localStorage.setItem("via_custom_quizzes", JSON.stringify(nextData.quizzes));
+                        } catch {
+                            console.warn("Não foi possível salvar cache de quizzes");
+                        }
+
+                        showStatus(
+                            "importStatus",
+                            `✓ ${nextData.quizzes.length} questões importadas com sucesso via CSV.`,
+                            "success"
+                        );
+                    } else {
+                        showStatus("importStatus", "Formato não suportado. Use JSON ou CSV.", "error");
+                        return;
+                    }
+
+                    renderHallmarks();
+                    renderFirstHallmark();
+
+                    if (document.getElementById("quizSection").style.display !== "none") {
+                        renderQuiz();
+                    }
+
+                    document.getElementById("resultsSection").classList.remove("show");
+                } catch (err) {
+                    showStatus("importStatus", `Erro ao importar: ${err.message}`, "error");
+                }
+            };
+
+            reader.readAsText(file);
+        }
+
+        function exportTemplate() {
+            const template = {
+                hallmarks: [
+                    {
+                        id: 1,
+                        name: "Exemplo de Hallmark",
+                        description: "Descrição funcional",
+                        pathways: [
+                            {
+                                name: "Nome da Via",
+                                genes: ["GENE1", "GENE2"],
+                                drugs: ["Fármaco 1", "Fármaco 2"],
+                                note: "Comentário opcional"
+                            }
+                        ],
+                        globalNote: "Nota opcional da hallmark"
+                    }
+                ],
+                quizzes: [
+                    {
+                        id: 1,
+                        question: "Qual via está mais associada a ...?",
+                        options: ["Opção A", "Opção B", "Opção C", "Opção D"],
+                        correct: 0,
+                        hallmark: 1,
+                        explanation: "Explicação da resposta correta."
+                    }
+                ],
+                cases: [
+                    {
+                        id: 1,
+                        title: "Caso Exemplo",
+                        stem: "Resumo clínico ou molecular do caso.",
+                        focus: "Objetivo didático principal.",
+                        hallmarks: [1]
+                    }
+                ]
+            };
+
+            const blob = new Blob([JSON.stringify(template, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "VIA_Template.json";
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function showStatus(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            el.textContent = message;
+            el.className = `status-message show ${type}`;
+            setTimeout(() => {
+                el.classList.remove("show");
+            }, 5000);
+        }
+
+        function resetApp() {
+            lastQuizResults = [];
+            try {
+                localStorage.removeItem("via_quiz_score");
+                localStorage.removeItem("via_quiz_hits");
+                localStorage.removeItem("via_quiz_total");
+                localStorage.removeItem("via_weak_areas");
+                localStorage.removeItem("via_quiz_details");
+            } catch (err) {
+                console.warn("Erro ao limpar localStorage:", err);
+            }
+
+            document.getElementById("resultsSection").classList.remove("show");
+            document.getElementById("mainContent").style.display = "grid";
+            document.getElementById("quizSection").style.display = "none";
+            document.getElementById("quizContainer").innerHTML = "";
+            document.getElementById("feedbackContainer").innerHTML = "";
+            document.getElementById("answerKeyContainer").innerHTML = "";
+            document.getElementById("referenceContainer").innerHTML = "";
+            document.getElementById("scoreDisplay").textContent = "0%";
+            document.getElementById("scoreMeta").textContent = `0/${hallmarksData.quizzes.length} acertos`;
+
+            renderHallmarks();
+            renderFirstHallmark();
+            document.getElementById("mainContent").scrollIntoView({ behavior: "smooth" });
+        }
+
+        window.addEventListener("load", () => {
+            loadCustomData();
+
+            try {
+                if (localStorage.getItem("via_session_active") === "true") {
+                    const name = localStorage.getItem("via_student_name") || "Aluno";
+                    const email = localStorage.getItem("via_student_email") || "";
+                    activateSessionUI(name, email);
+                }
+            } catch (err) {
+                console.warn("Erro ao verificar sessão em localStorage:", err);
+            }
+        });
+    </script>
+</body>
+</html>
+
