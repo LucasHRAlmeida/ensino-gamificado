@@ -1,0 +1,334 @@
+{
+  "quizzes": [
+    {
+      "id": 1,
+      "question": "Qual via de sinalização é essencial para transdução de sinal mitogênico desde receptores de fatores de crescimento?",
+      "options": ["RAS-MAPK", "Wnt/β-catenina", "Notch", "Hedgehog"],
+      "correct": 0,
+      "hallmark": 1,
+      "explanation": "RAS-MAPK é a cascata clássica de transdução de sinal proliferativo a partir de RTKs como EGFR, FGFR e HER2. Wnt/β-catenina, Notch e Hedgehog são vias distintas sem papel primário na proliferação mitogênica RTK-dependente."
+    },
+    {
+      "id": 2,
+      "question": "No contexto da proliferação autônoma, quais genes caracterizam melhor a via PI3K-AKT-mTOR?",
+      "options": [
+        "KRAS, NRAS, BRAF e EGFR",
+        "PIK3CA, AKT1, PTEN e MTOR",
+        "TP53, RB1, CDKN2A e MDM2",
+        "BRCA1, BRCA2, ATM e CHEK2"
+      ],
+      "correct": 1,
+      "hallmark": 1,
+      "explanation": "PIK3CA, AKT1, PTEN e MTOR representam o eixo PI3K-AKT-mTOR de sobrevivência e crescimento. KRAS/NRAS/BRAF/EGFR pertencem a RAS-MAPK; TP53/RB1 são supressores; BRCA1/BRCA2 são genes de reparo."
+    },
+    {
+      "id": 3,
+      "question": "Uma célula tumoral com amplificação de MDM2 e TP53 selvagem apresenta qual vantagem seletiva?",
+      "options": [
+        "Aumento de apoptose mediada por p53",
+        "Neutralização da atividade supressora de p53",
+        "Aumento de senescência",
+        "Bloqueio total de divisão celular"
+      ],
+      "correct": 1,
+      "hallmark": 2,
+      "explanation": "MDM2 amplificado liga-se a p53 e promove sua ubiquitinação e degradação. Isso neutraliza o guardião do genoma, permitindo escape de checkpoints. É um mecanismo comum de evasão de supressores."
+    },
+    {
+      "id": 4,
+      "question": "Qual é a função primária de p53 diante de dano ao DNA?",
+      "options": [
+        "Amplificar o dano genético para eliminar a célula",
+        "Orquestrar parada do ciclo, reparo ou apoptose",
+        "Aumentar proliferação para diluir o dano",
+        "Promover metástase"
+      ],
+      "correct": 1,
+      "hallmark": 2,
+      "explanation": "p53 coordena checkpoint, reparo do DNA, senescência ou apoptose. É conhecido como 'guardião do genoma'. Sua perda ou neutralização (por MDM2, HPV E6, etc.) é evento crítico na tumorigênese."
+    },
+    {
+      "id": 5,
+      "question": "PTEN atua como freio principal de qual via oncogênica?",
+      "options": ["RAS-MAPK", "PI3K-AKT-mTOR", "Notch", "Hedgehog"],
+      "correct": 1,
+      "hallmark": 3,
+      "explanation": "PTEN desfosforila PIP3 para PIP2, bloqueando recrutamento de AKT à membrana. Sua perda leva a ativação constitutiva de AKT e mTOR, favorecendo sobrevivência e metabolismo."
+    },
+    {
+      "id": 6,
+      "question": "Qual proteína anti-apoptótica é principal alvo do fármaco venetoclax?",
+      "options": ["BAX", "PUMA", "BCL2", "FOXO3"],
+      "correct": 2,
+      "hallmark": 3,
+      "explanation": "Venetoclax é inibidor de BCL2, proteína anti-apoptótica que antagoniza mediadores de morte mitocondrial como BAX e PUMA. Usado em LLC e linfomas com t(11;14)."
+    },
+    {
+      "id": 7,
+      "question": "Em qual hallmark a amplificação de CCND1 e perda de CDKN2A são eventos chave?",
+      "options": [
+        "Proliferação autônoma",
+        "Evasão de supressores",
+        "Imortalidade replicativa",
+        "Angiogênese"
+      ],
+      "correct": 1,
+      "hallmark": 2,
+      "explanation": "CCND1 (ciclina D1) amplificado e CDKN2A (p16) perdido abrem o checkpoint G1/S ao remover freios da progresso do ciclo. Central na evasão de supressores de crescimento."
+    },
+    {
+      "id": 8,
+      "question": "Qual hallmark está mais associado à perda de função de RB1?",
+      "options": [
+        "Metabolismo reprogramado",
+        "Evasão de supressores do crescimento",
+        "Imortalidade replicativa",
+        "Angiogênese"
+      ],
+      "correct": 1,
+      "hallmark": 2,
+      "explanation": "RB1 regula o checkpoint G1/S; sua perda permite que células ignorem bloqueios de proliferação e escape de supressores de crescimento. É evento crítico em retinoblastoma e outros tumores."
+    },
+    {
+      "id": 9,
+      "question": "Qual fármaco restaura a função de p53 mutante ao permitir sua redobra correta?",
+      "options": ["Nutlina-3", "APR-246", "Milademetan", "Everolimo"],
+      "correct": 1,
+      "hallmark": 2,
+      "explanation": "APR-246 (eprenetapopt) liga-se a p53 mutante e promove sua conformação funcional, restaurando atividade transcricional. Nutlina-3 estabiliza p53 selvagem; Milademetan bloqueia MDM2."
+    },
+    {
+      "id": 10,
+      "question": "A manutenção telomérica por telomerase ativa qual capacidade oncogênica?",
+      "options": [
+        "Proliferação autônoma",
+        "Evasão de supressores",
+        "Imortalidade replicativa",
+        "Angiogênese"
+      ],
+      "correct": 2,
+      "hallmark": 4,
+      "explanation": "Telomerase (TERT) adiciona sequências teloméricas, permitindo divisões indefinidas. Sem telomerase ou ALT, células enfrentam limite de Hayflick (~50-70 divisões). ~85-90% dos tumores reativam telomerase."
+    },
+    {
+      "id": 11,
+      "question": "Qual mecanismo alternativo de manutenção telomérica é frequente em gliomas e sarcomas?",
+      "options": ["Telomerase", "ALT (Alternative Lengthening)", "Replicação viral", "Fusão cromossomal"],
+      "correct": 1,
+      "hallmark": 4,
+      "explanation": "ALT usa recombinação homóloga entre telômeros (t-loops) para manter comprimento. Frequente em tumores com mutações de ATRX/DAXX (~10-15% de tumores). Não depende de telomerase."
+    },
+    {
+      "id": 12,
+      "question": "Em angiogênese tumoral, qual afirmação melhor distingue VEGF de HIF-1α?",
+      "options": [
+        "VEGF é fator de transcrição e HIF-1α é receptor de membrana",
+        "VEGF é ligante pró-angiogênico; HIF-1α é regulador transcricional de resposta à hipóxia",
+        "VEGF e HIF-1α são sinônimos funcionais",
+        "HIF-1α atua apenas em células imunes"
+      ],
+      "correct": 1,
+      "hallmark": 5,
+      "explanation": "VEGF é fator de crescimento secretado ligante de VEGFR1/2. HIF-1α é fator de transcrição nuclear que, sob hipóxia, induz VEGFA, GLUT1 e genes glicolíticos. São moléculas distintas."
+    },
+    {
+      "id": 13,
+      "question": "Qual fármaco inibe seletivamente VEGFR2 (KDR) e é usado em carcinoma renal metastático?",
+      "options": ["Sorafenibe", "Sunitinibe", "Pazopanibe", "Everolimo"],
+      "correct": 1,
+      "hallmark": 5,
+      "explanation": "Sunitinibe bloqueia VEGFR2, PDGFR, KIT e FLT3. É aprovado para RCC, GIST e tumores neuroendócrinos pancreáticos. Pazopanibe também bloqueia VEGFR. Sorafenibe tem espectro diferente."
+    },
+    {
+      "id": 14,
+      "question": "Na hallmark de invasão e metástase, qual alternativa separa corretamente EMT de MET receptor?",
+      "options": [
+        "EMT corresponde ao receptor MET ativado por HGF",
+        "EMT envolve SNAI1/TWIST/ZEB; MET é receptor tirosina-quinase distinto",
+        "EMT e MET são exatamente o mesmo processo",
+        "MET é fator de transcrição do EMT"
+      ],
+      "correct": 1,
+      "hallmark": 6,
+      "explanation": "EMT é programa de reprogramação celular (perda de CDH1, ganho de VIM) regulado por SNAI1, TWIST, ZEB. MET (hepatocyte growth factor receptor) é receptor TK ativado por HGF. Fenômenos distintos."
+    },
+    {
+      "id": 15,
+      "question": "Qual fármaco bloqueia especificamente a exon 14 skipping de MET em adenocarcinoma pulmonar?",
+      "options": ["Tepotinibe", "Capmatinibe", "Erlotinibe", "Crizotinibe"],
+      "correct": 0,
+      "hallmark": 6,
+      "explanation": "Tepotinibe é inibidor oral de MET aprovado para tumores pulmonares com MET exon 14 skipping. Capmatinibe também bloqueia MET mas em contextos diferentes. Erlotinibe alvo EGFR; crizotinibe alvo ALK."
+    },
+    {
+      "id": 16,
+      "question": "Qual hallmark envolve reprogramação de captação de glicose e conversão a lactato mesmo sob normóxia?",
+      "options": [
+        "Angiogênese",
+        "Metabolismo reprogramado",
+        "Plasticidade fenotípica",
+        "Inflamação pró-tumoral"
+      ],
+      "correct": 1,
+      "hallmark": 7,
+      "explanation": "O efeito Warburg descreve glicólise aeróbica em tumores (conversão a lactato sob O2 normal). Genes como GLUT1, LDHA, PKM2 e HIF-1α orquestram metabolismo glicolítico preferencial."
+    },
+    {
+      "id": 17,
+      "question": "mTORC1 favorece qual processo celular em tumores?",
+      "options": [
+        "Apoptose",
+        "Anabolismo, síntese proteica e suporte à proliferação",
+        "Diferenciação celular",
+        "Reparo de DNA"
+      ],
+      "correct": 1,
+      "hallmark": 7,
+      "explanation": "mTORC1 ativa S6K e 4EBP1, promovendo síntese proteica e lipídica. Favorece anabolismo e crescimento rápido. Inibidores como everolimo bloqueiam mTOR em cânceres com PTEN perdida ou PI3K hiperativa."
+    },
+    {
+      "id": 18,
+      "question": "Qual fármaco inibidor de CTLA-4 é amplamente utilizado em melanoma e linfoma?",
+      "options": ["Pembrolizumabe", "Atezolizumabe", "Ipilimumabe", "Olaparibe"],
+      "correct": 2,
+      "hallmark": 8,
+      "explanation": "Ipilimumabe é mAb anti-CTLA-4 aprovado para melanoma metastático (2011). Bloqueia molécula co-inibitória precoce. Pembrolizumabe e atezolizumabe targeting PD-1/PD-L1 são mais recentes."
+    },
+    {
+      "id": 19,
+      "question": "Em imunoterapia, qual é a diferença entre PD-1/PD-L1 e CTLA-4?",
+      "options": [
+        "São exatamente o mesmo mecanismo",
+        "PD-1/PD-L1 age em periferia; CTLA-4 age precocemente em linfonodo",
+        "CTLA-4 inibe apenas tumores; PD-1 inibe células normais",
+        "PD-L1 é proteína tumoral; CTLA-4 é proteína viral"
+      ],
+      "correct": 1,
+      "hallmark": 8,
+      "explanation": "CTLA-4 atua em fases precoces de ativação T em linfonodo (sinal coestimulador). PD-1/PD-L1 atua em periferia, reduzindo ativação efetora em tecido tumoral. Mecanismos temporalmente distintos."
+    },
+    {
+      "id": 20,
+      "question": "Qual hallmark descreve ganho de mutações e alterações cromossômicas que aceleram tumorigenese?",
+      "options": [
+        "Imortalidade replicativa",
+        "Inflamação pró-tumoral",
+        "Instabilidade genômica e mutação",
+        "Evasão imune"
+      ],
+      "correct": 2,
+      "hallmark": 9,
+      "explanation": "Instabilidade genômica (GI) descreve falhas de checkpoint, reparo defeituoso, aneuplodia e aumento de taxa mutacional. Potencia aquisição de oncogenes e perda de supressores, acelerando evolução tumoral."
+    },
+    {
+      "id": 21,
+      "question": "Defetos em qual via de reparo favorecem sensibilidade sintética a inibidores de PARP?",
+      "options": [
+        "Reparo por excisão de nucleotídeo (NER)",
+        "Recombinação homóloga (HR)",
+        "Reparo de mismatch (MMR)",
+        "Reparo por excisão de base (BER)"
+      ],
+      "correct": 1,
+      "hallmark": 9,
+      "explanation": "Mutações em BRCA1, BRCA2 ou PALB2 prejudicam HR. Sem HR, células dependem de PARP para recombinação não-homóloga. PARP inibe sinalização de quebra dupla, causando morte em células deficientes de HR."
+    },
+    {
+      "id": 22,
+      "question": "Qual inflamacina/citocina-chave sustenta inflamação pró-tumoral via eixo IL-6/STAT3?",
+      "options": ["TNF-α", "IL-6", "IFN-γ", "IL-2"],
+      "correct": 1,
+      "hallmark": 10,
+      "explanation": "IL-6 liga a gp130/STAT3, promovendo sobrevivência, proliferação e escape imune. STAT3 é fator-chave pró-tumoral. JAK/STAT3 é alvo de tofacitinibe em contextos experimentais."
+    },
+    {
+      "id": 23,
+      "question": "NF-κB integra sinais pró-tumorais em qual contexto?",
+      "options": [
+        "Apoptose induzida",
+        "Diferenciação",
+        "Inflamação e sobrevivência de células tumorais",
+        "Senescência"
+      ],
+      "correct": 2,
+      "hallmark": 10,
+      "explanation": "NF-κB é fator de transcrição que ativa genes de sobrevivência (BCL2, MCL1), citocinas inflamatórias (TNF, IL-6) e moléculas de adesão. É nó central de inflamação pró-tumoral."
+    },
+    {
+      "id": 24,
+      "question": "Qual hallmark descreve alternância entre estados epiteliais, mesenquimais e híbridos?",
+      "options": [
+        "Evasão imune",
+        "Instabilidade genômica",
+        "Plasticidade fenotípica",
+        "Inflamação pró-tumoral"
+      ],
+      "correct": 2,
+      "hallmark": 11,
+      "explanation": "Plasticidade fenotípica permite que células tumorais alternem entre estados via fatores de transcrição como SNAI1, TWIST, ZEB. Não é binária (EMT vs MET), mas contínua com estados híbridos."
+    },
+    {
+      "id": 25,
+      "question": "Cancer stem cells (CSCs) são associadas a qual marcador de superfície?",
+      "options": ["CD8", "CD20", "CD44", "CD3"],
+      "correct": 2,
+      "hallmark": 11,
+      "explanation": "CD44 e CD133 (PROM1) são marcadores de CSCs em vários tumores. CSCs apresentam auto-renovação, diferenciação limitada e resistência a terapia. CD8/CD3 são marcadores T; CD20 é marcador B."
+    },
+    {
+      "id": 26,
+      "question": "Qual hallmark envolve alterações de cromatina (acetilação/metilação) sem mudar sequência de DNA?",
+      "options": [
+        "Instabilidade genômica",
+        "Plasticidade fenotípica",
+        "Reprogramação epigenética",
+        "Senescência pró-tumoral"
+      ],
+      "correct": 2,
+      "hallmark": 12,
+      "explanation": "Reprogramação epigenética altera acessibilidade cromatínica via HDACs, DNMTs, TET2, etc., mudando programas transcricionais sem mutações. Reversível e alvo-terapêutico (vorinostate, azacitidina)."
+    },
+    {
+      "id": 27,
+      "question": "Qual fármaco inibe HDACs para reativar genes supressores silenciados?",
+      "options": ["Vorinostate", "Azacitidina", "Decitabina", "Nutlina-3"],
+      "correct": 0,
+      "hallmark": 12,
+      "explanation": "Vorinostate inibe HDAC1-11, aumentando acetilação de histonas e transcrição de genes silenciados. Azacitidina e decitabina inibem DNMTs. Nutlina-3 estabiliza p53."
+    },
+    {
+      "id": 28,
+      "question": "O microbioma intestinal modula imunidade de mucosa via qual receptor padrão?",
+      "options": ["TCR", "BCR", "TLR4/NOD2", "MHC-I"],
+      "correct": 2,
+      "hallmark": 13,
+      "explanation": "TLR4 (lipopolissacáride gram-) e NOD2 (peptidoglicano) reconhecem PAMPs bacterianos, ativando resposta inata. FMT experimental visa restaurar microbiota anti-tumoral."
+    },
+    {
+      "id": 29,
+      "question": "Células senescentes podem ser prejudiciais ao tumor via qual mecanismo?",
+      "options": [
+        "Aumento de apoptose",
+        "Secreção de SASP (senescence-associated secretory phenotype)",
+        "Bloqueio de angiogênese",
+        "Inibição de invasão"
+      ],
+      "correct": 1,
+      "hallmark": 14,
+      "explanation": "SASP envolve secreção de IL-6, CXCL8, MMPs e citocinas que promovem inflamação, remodelamento de matriz e, paradoxalmente, facilitação tumoral. Senescência inicial é antitumoral; persistência é pró-tumoral."
+    },
+    {
+      "id": 30,
+      "question": "Qual combinação de fármacos representa abordagem senolítica experimental (remover células senescentes)?",
+      "options": [
+        "Pembrolizumabe + Ipilimumabe",
+        "Dasatinibe + Quercetina",
+        "Olaparibe + Talazoparibe",
+        "Everolimo + Alpelisibe"
+      ],
+      "correct": 1,
+      "hallmark": 14,
+      "explanation": "Dasatinibe (inibidor SRC/ABL) + quercetina (antioxidante) em estudos pré-clínicos eliminam células senescentes. Ainda experimental em oncologia; não é terapia consolidada."
+    }
+  ]
+}
