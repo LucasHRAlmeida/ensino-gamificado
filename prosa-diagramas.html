@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIA — Vias de Sinalização Oncológica · Prosa + Diagramas</title>
+  <style>
+    :root {
+      --navy-900: #0c3e67;
+      --navy-950: #062a47;
+      --teal-500: #19a6c9;
+      --ink: #122331;
+      --muted: #526879;
+      --paper: #ffffff;
+      --wash: #f3f7f9;
+      --line: #d7e1e8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      background: var(--wash);
+      color: var(--ink);
+      line-height: 1.65;
+      padding: 40px 20px;
+    }
+    .shell { max-width: 860px; margin: 0 auto; }
+    header {
+      background: var(--navy-900);
+      color: white;
+      padding: 32px 28px;
+      border-radius: 18px;
+      margin-bottom: 32px;
+    }
+    header h1 { font-size: 1.6rem; letter-spacing: -0.03em; }
+    header p { opacity: 0.85; margin-top: 8px; font-size: 0.95rem; }
+    a.back {
+      display: inline-block;
+      margin-bottom: 16px;
+      color: var(--teal-500);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    section {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    h2 { color: var(--navy-900); font-size: 1.35rem; margin-bottom: 12px; }
+    h3 { color: var(--navy-900); font-size: 1.1rem; margin: 20px 0 8px; }
+    p, li { color: var(--muted); margin-bottom: 10px; }
+    ul { padding-left: 20px; }
+    .flow {
+      background: var(--wash);
+      border-left: 4px solid var(--teal-500);
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-family: ui-monospace, monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      border-radius: 0 8px 8px 0;
+    }
+    .tag {
+      display: inline-block;
+      background: #e6f6ea;
+      color: #1a7a3a;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin: 2px;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <a class="back" href="index.html">← Voltar à plataforma interativa</a>
+    <header>
+      <h1>VIA — Vias de Sinalização Oncológica</h1>
+      <p>Versão em prosa + diagramas didáticos · inspirada no mapa integrado (Hallmarks, genes-chave e conceitos avançados)</p>
+      <p style="margin-top:12px;font-size:0.85rem;opacity:0.7">Dr Lucas HR · FMRP-USP · Iniciativa VIA</p>
+    </header>
+
+    <section>
+      <h2>Framework Heurístico</h2>
+      <p>Do significante (nome da via) ao significado biológico e clínico:</p>
+      <div class="flow">MUTAÇÃO / ALTERAÇÃO GENÔMICA
+          ↓
+Desregulação de via de sinalização
+          ↓
+Ganho ou perda de função em processo celular
+          ↓
+Aquisição de Hallmark(s) do câncer
+          ↓
+Consequência clínica (fenótipo, prognóstico, alvo terapêutico)</div>
+    </section>
+
+    <section>
+      <h2>Os 14 Hallmarks (Hanahan 2022)</h2>
+      <ol style="padding-left:20px;color:var(--muted)">
+        <li>Sustained proliferative signaling — Proliferação autônoma</li>
+        <li>Evading growth suppressors — Evasão de supressores</li>
+        <li>Resisting cell death — Resistência à apoptose</li>
+        <li>Enabling replicative immortality — Imortalidade replicativa</li>
+        <li>Inducing/accessing vasculature — Angiogênese</li>
+        <li>Activating invasion & metastasis — Invasão e metástase</li>
+        <li>Reprogramming cellular metabolism — Metabolismo reprogramado</li>
+        <li>Avoiding immune destruction — Evasão imune</li>
+        <li>Genome instability & mutation — Instabilidade genômica</li>
+        <li>Tumor-promoting inflammation — Inflamação pró-tumoral</li>
+        <li>Unlocking phenotypic plasticity — Plasticidade fenotípica</li>
+        <li>Non-mutational epigenetic reprogramming — Reprogramação epigenética</li>
+        <li>Polymorphic microbiomes — Microbioma polimórfico</li>
+        <li>Senescent cells — Células senescentes pró-tumorais</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Bloco I — Via RAS-MAPK</h2>
+      <div class="flow">Fator de crescimento → RTK (EGFR/HER2/FGFR/MET)
+→ GRB2-SOS → RAS (GDP→GTP)
+→ RAF → MEK → ERK → FOS/JUN/MYC → proliferação</div>
+      <p><strong>Genes-chave:</strong> <span class="tag">KRAS</span> <span class="tag">NRAS</span> <span class="tag">BRAF V600E</span> <span class="tag">EGFR</span> <span class="tag">HER2</span></p>
+      <p><strong>Hallmarks principais:</strong> 1, 3, 7</p>
+      <p><strong>Fármacos:</strong> erlotinibe, osimertinibe, sotorasibe, adagrasibe, vemurafenibe + trametinibe.</p>
+      <p><strong>Conceito central:</strong> RAS é o interruptor molecular. Mutações G12/G13/Q61 travam o estado GTP-ligado.</p>
+    </section>
+
+    <section>
+      <h2>Bloco II — Via PI3K-AKT-mTOR</h2>
+      <div class="flow">RTK/GPCR → PI3K → PIP2→PIP3
+← PTEN (freio)
+→ AKT → mTORC1 → síntese proteica + inibição apoptose + Warburg</div>
+      <p><strong>Genes-chave:</strong> <span class="tag">PIK3CA</span> <span class="tag">PTEN</span> <span class="tag">AKT1</span> <span class="tag">TSC1/2</span></p>
+      <p><strong>Conceito:</strong> Haploinsuficiência de PTEN já confere suscetibilidade. Perda de uma cópia reduz a dose funcional o suficiente para desequilibrar o eixo.</p>
+    </section>
+
+    <section>
+      <h2>Bloco III — Via p53-MDM2</h2>
+      <div class="flow">Dano DNA → ATM/ATR → fosforila p53
+→ estabilização → p21 (parada), BAX/PUMA (apoptose), MDM2 (feedback)</div>
+      <p><strong>Genes:</strong> <span class="tag">TP53</span> <span class="tag">MDM2</span> <span class="tag">ATM</span> <span class="tag">CHEK2</span></p>
+      <p><strong>Conceito avançado:</strong> Mutações missense de TP53 frequentemente exercem efeito dominante-negativo + ganho de função. A proteína mutante se incorpora ao tetrâmero e inibe a wild-type.</p>
+      <h3>Caso brasileiro — TP53 p.R337H</h3>
+      <p>Mutação fundadora comum no Sul/Sudeste do Brasil. Explica clusters de carcinoma adrenocortical pediátrico (CAP). Penetrância incompleta (~3,9–10% para CAP até 12 anos). Haploinsuficiência condicional por pH no córtex adrenal fetal + efeito DN. Triagem neonatal no Paraná identificou ~1:375 portadores. Vigilância com USG abdominal semestral detecta tumores precoces e melhora sobrevida.</p>
+    </section>
+
+    <section>
+      <h2>Bloco IV — Via RB1-CDK4/6-CCND1</h2>
+      <div class="flow">Mitógenos → Ciclina D → CDK4/6 → fosforilação de RB
+→ libera E2F → entrada em S (ponto de restrição)</div>
+      <p><strong>Freios:</strong> p16 (CDKN2A), p21, p27.</p>
+      <p><strong>Genes:</strong> <span class="tag">RB1</span> <span class="tag">CDKN2A</span> <span class="tag">CCND1</span></p>
+    </section>
+
+    <section>
+      <h2>Interseção Metabólica (Hallmark 7)</h2>
+      <p>mTORC1 ativo reprograma o metabolismo para efeito Warburg (glicólise aeróbica): ativa HIF-1α, GLUT1, hexoquinase, LDHA. Nutre biossíntese necessária à proliferação rápida.</p>
+    </section>
+
+    <section>
+      <h2>Como usar este mapa</h2>
+      <p>Conecte mutação → via → hallmark → fenótipo → alvo. As vias conversam entre si (PI3K ativa mTOR; RAS ativa PI3K; p53 conversa com RB). A compreensão das intersecções separa memorização de raciocínio clínico-molecular.</p>
+      <p><a href="index.html" style="color:var(--teal-500);font-weight:700">→ Ir para a plataforma interativa com quiz e casos</a></p>
+    </section>
+
+    <footer>
+      Iniciativa VIA · Dr Lucas HR · FMRP-USP<br>
+      Ciência e Tecnologia a serviço do Cuidado
+    </footer>
+  </div>
+</body>
+</html>
