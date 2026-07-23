@@ -14,21 +14,21 @@
         }
 
         :root {
-            --primary: #1e3c72;
-            --accent: #2a5298;
-            --success: #27ae60;
+            --primary: #0c3e67;
+            --accent: #19a6c9;
+            --success: #2eaf53;
             --danger: #e74c3c;
             --warning: #f39c12;
-            --info: #3498db;
-            --light-bg: #ecf0f1;
-            --dark-text: #2c3e50;
-            --border-color: #bdc3c7;
-            --muted: #7f8c8d;
+            --info: #19a6c9;
+            --light-bg: #f3f7f9;
+            --dark-text: #122331;
+            --border-color: #d7e1e8;
+            --muted: #526879;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #0c3e67 0%, #19a6c9 100%);
             min-height: 100vh;
             color: var(--dark-text);
         }
@@ -66,7 +66,26 @@
             font-style: italic;
         }
 
-        .auth-section,
+        .prosa-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding: 10px 18px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.25s ease;
+        }
+
+        .prosa-link:hover {
+            background: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
         .import-section,
         .quiz-section,
         .main-panel,
@@ -76,20 +95,17 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .auth-section,
         .import-section {
             padding: 20px;
             margin-bottom: 20px;
         }
 
-        .auth-form,
         .file-input-wrapper {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
         }
 
-        .auth-form input,
         .file-input-wrapper input[type="file"] {
             flex: 1;
             min-width: 220px;
@@ -129,7 +145,7 @@
         }
 
         .btn-secondary:hover {
-            background: #2980b9;
+            background: #1489a8;
         }
 
         .btn-success {
@@ -138,7 +154,7 @@
         }
 
         .btn-success:hover {
-            background: #229954;
+            background: #249544;
         }
 
         .btn-small {
@@ -532,27 +548,12 @@
             <div class="subtitle">Ciência e tecnologia a serviço do cuidado</div>
             <div class="author">Dr Lucas HR - médico (FMRP-USP / Turma 64)</div>
             <div class="author">Biologia do Câncer - Vias de Sinalização Oncológica</div>
+            <a class="prosa-link" href="prosa-diagramas.html">📖 Versão em prosa + diagramas didáticos →</a>
         </header>
 
-        <div class="auth-section">
-            <div id="authContainer">
-                <div class="auth-form">
-                    <input type="text" id="studentName" placeholder="Digite seu nome completo" />
-                    <input type="email" id="studentEmail" placeholder="seu.email@usp.br" />
-                    <button class="btn btn-primary" onclick="login()">Entrar</button>
-                </div>
-                <div id="authStatus" class="status-message"></div>
-            </div>
-
-            <div id="sessionInfo" style="display:none; margin-top:10px;">
-                <strong>Sessão ativa:</strong> <span id="sessionUser"></span>
-                <button class="btn btn-secondary btn-small" onclick="logout()" style="float:right;">Sair</button>
-            </div>
-        </div>
-
-        <div class="import-section" id="importSection" style="display:none;">
+        <div class="import-section" id="importSection">
             <h3>📥 Importar Banco de Dados</h3>
-            <p style="margin-bottom: 15px; color: #7f8c8d;">
+            <p style="margin-bottom: 15px; color: var(--muted);">
                 Atualize questões, casos clínicos e, se desejar, hallmarks customizadas via JSON estruturado. CSV permanece disponível para quizzes.
             </p>
             <div class="file-input-wrapper">
@@ -563,7 +564,7 @@
             <div id="importStatus" class="status-message"></div>
         </div>
 
-        <div class="main-content" id="mainContent" style="display:none;">
+        <div class="main-content" id="mainContent">
             <div class="sidebar">
                 <h3>🎯 14 Hallmarks do Câncer</h3>
                 <div id="hallmarksList"></div>
@@ -607,7 +608,7 @@
             <div id="resultsStatus" class="status-message"></div>
         </div>
 
-        <div style="text-align:center; margin-top:30px; display:none;" id="navButtons">
+        <div style="text-align:center; margin-top:30px;" id="navButtons">
             <button class="btn btn-primary" onclick="showQuiz()">➜ Ir para Avaliação</button>
             <button class="btn btn-secondary" onclick="resetApp()">↻ Recomeçar</button>
         </div>
@@ -1148,62 +1149,6 @@
                 cases: hallmarksData.cases
             };
         }
-        function login() {
-            const name = document.getElementById("studentName").value.trim();
-            const email = document.getElementById("studentEmail").value.trim();
-
-            if (!name || !email) {
-                showStatus("authStatus", "Por favor, preencha nome e email.", "error");
-                return;
-            }
-
-            try {
-                localStorage.setItem("via_student_name", name);
-                localStorage.setItem("via_student_email", email);
-                localStorage.setItem("via_session_active", "true");
-            } catch (err) {
-                console.warn("localStorage indisponível:", err);
-                showStatus("authStatus", "Aviso: Dados não serão persistidos (localStorage indisponível).", "info");
-            }
-
-            showStatus("authStatus", `Bem-vindo, ${name}!`, "success");
-
-            setTimeout(() => {
-                activateSessionUI(name, email);
-            }, 700);
-        }
-
-        function activateSessionUI(name, email) {
-            document.getElementById("authContainer").style.display = "none";
-            document.getElementById("sessionInfo").style.display = "block";
-            document.getElementById("sessionUser").textContent = `${name} (${email})`;
-
-            document.getElementById("importSection").style.display = "block";
-            document.getElementById("mainContent").style.display = "grid";
-            document.getElementById("quizSection").style.display = "none";
-            document.getElementById("resultsSection").classList.remove("show");
-            document.getElementById("navButtons").style.display = "block";
-
-            loadCustomData();
-            initializeApp();
-        }
-
-        function logout() {
-            try {
-                localStorage.removeItem("via_student_name");
-                localStorage.removeItem("via_student_email");
-                localStorage.removeItem("via_session_active");
-                localStorage.removeItem("via_quiz_score");
-                localStorage.removeItem("via_quiz_hits");
-                localStorage.removeItem("via_quiz_total");
-                localStorage.removeItem("via_weak_areas");
-                localStorage.removeItem("via_quiz_details");
-            } catch (err) {
-                console.warn("Erro ao limpar localStorage:", err);
-            }
-            location.reload();
-        }
-
         function initializeApp() {
             renderHallmarks();
             renderFirstHallmark();
@@ -1550,8 +1495,6 @@
 
         function exportReport() {
             try {
-                const studentName = localStorage.getItem("via_student_name") || "Aluno";
-                const studentEmail = localStorage.getItem("via_student_email") || "";
                 const score = localStorage.getItem("via_quiz_score") || "0";
                 const hits = localStorage.getItem("via_quiz_hits") || "0";
                 const total = localStorage.getItem("via_quiz_total") || String(hallmarksData.quizzes.length);
@@ -1561,7 +1504,7 @@
                 const refs = getRecommendedReferences();
 
                 const weakHtml = Object.keys(weakAreas).length === 0
-                    ? `<p style="color:#27ae60;"><strong>Desempenho excelente.</strong> O aluno demonstrou integração consistente entre vias, genes e hallmarks.</p>`
+                    ? `<p style="color:#2eaf53;"><strong>Desempenho excelente.</strong> O aluno demonstrou integração consistente entre vias, genes e hallmarks.</p>`
                     : `
                         <ul>
                             ${Object.keys(weakAreas).map(id => {
@@ -1573,7 +1516,7 @@
                     `;
 
                 const answerKeyHtml = details.map(item => `
-                    <div style="border-left: 4px solid ${item.isCorrect ? "#27ae60" : "#e74c3c"}; background: #fff; padding: 12px; border-radius: 6px; margin-bottom: 10px;">
+                    <div style="border-left: 4px solid ${item.isCorrect ? "#2eaf53" : "#e74c3c"}; background: #fff; padding: 12px; border-radius: 6px; margin-bottom: 10px;">
                         <strong>Questão ${escapeHtml(item.questionNumber)}</strong>
                         <p style="margin-top:6px;"><strong>Pergunta:</strong> ${escapeHtml(item.question)}</p>
                         <p style="margin-top:6px;"><strong>Resposta do aluno:</strong> ${escapeHtml(item.selectedText)}</p>
@@ -1585,34 +1528,32 @@
                 const refsHtml = refs.map(ref => `
                     <li style="margin-bottom: 8px;">
                         ${escapeHtml(ref.citation)}<br/>
-                        <span style="color:#3498db;">${escapeHtml(ref.url)}</span>
+                        <span style="color:#19a6c9;">${escapeHtml(ref.url)}</span>
                     </li>
                 `).join("");
 
                 const reportContent = `
-                    <div id="pdfReport" style="padding: 30px; font-family: Arial, sans-serif; line-height: 1.6; color: #2c3e50;">
-                        <h1 style="text-align:center; color:#1e3c72; margin-bottom: 4px;">VIA - Vida Integrada e Autônoma</h1>
-                        <p style="text-align:center; color:#2a5298; margin: 0 0 4px 0;">Ciência e tecnologia a serviço do cuidado</p>
-                        <p style="text-align:center; color:#7f8c8d; margin: 0 0 20px 0;">Dr Lucas HR - médico (FMRP-USP / Turma 64)</p>
+                    <div id="pdfReport" style="padding: 30px; font-family: Arial, sans-serif; line-height: 1.6; color: #122331;">
+                        <h1 style="text-align:center; color:#0c3e67; margin-bottom: 4px;">VIA - Vida Integrada e Autônoma</h1>
+                        <p style="text-align:center; color:#19a6c9; margin: 0 0 4px 0;">Ciência e tecnologia a serviço do cuidado</p>
+                        <p style="text-align:center; color:#526879; margin: 0 0 20px 0;">Dr Lucas HR - médico (FMRP-USP / Turma 64)</p>
 
-                        <hr style="border:none; border-top: 2px solid #1e3c72; margin: 18px 0;" />
+                        <hr style="border:none; border-top: 2px solid #0c3e67; margin: 18px 0;" />
 
-                        <h2 style="color:#1e3c72;">Relatório de Desempenho</h2>
-                        <p><strong>Nome:</strong> ${escapeHtml(studentName)}</p>
-                        <p><strong>Email:</strong> ${escapeHtml(studentEmail)}</p>
+                        <h2 style="color:#0c3e67;">Relatório de Desempenho</h2>
                         <p><strong>Data:</strong> ${escapeHtml(new Date().toLocaleDateString("pt-BR"))}</p>
 
-                        <h3 style="color:#1e3c72; margin-top: 24px;">Resultado Geral</h3>
-                        <p style="font-size: 22px; color:#1e3c72;"><strong>Pontuação: ${escapeHtml(score)}%</strong></p>
+                        <h3 style="color:#0c3e67; margin-top: 24px;">Resultado Geral</h3>
+                        <p style="font-size: 22px; color:#0c3e67;"><strong>Pontuação: ${escapeHtml(score)}%</strong></p>
                         <p><strong>Acertos:</strong> ${escapeHtml(hits)}/${escapeHtml(total)}</p>
 
-                        <h3 style="color:#1e3c72; margin-top: 24px;">Devolutiva Pedagógica</h3>
+                        <h3 style="color:#0c3e67; margin-top: 24px;">Devolutiva Pedagógica</h3>
                         ${weakHtml}
 
-                        <h3 style="color:#1e3c72; margin-top: 24px;">Gabarito Comentado</h3>
+                        <h3 style="color:#0c3e67; margin-top: 24px;">Gabarito Comentado</h3>
                         ${answerKeyHtml}
 
-                        <h3 style="color:#1e3c72; margin-top: 24px;">Referências Recomendadas</h3>
+                        <h3 style="color:#0c3e67; margin-top: 24px;">Referências Recomendadas</h3>
                         <ol>${refsHtml}</ol>
 
                         <hr style="border:none; border-top: 1px solid #bdc3c7; margin: 24px 0;" />
@@ -1632,7 +1573,7 @@
 
                 const options = {
                     margin: 10,
-                    filename: `VIA_Relatorio_${studentName.replace(/\s+/g, "_")}_${new Date().toISOString().split("T")[0]}.pdf`,
+                    filename: `VIA_Relatorio_${new Date().toISOString().split("T")[0]}.pdf`,
                     image: { type: "jpeg", quality: 0.98 },
                     html2canvas: { scale: 2, useCORS: true },
                     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
@@ -1869,16 +1810,7 @@
 
         window.addEventListener("load", () => {
             loadCustomData();
-
-            try {
-                if (localStorage.getItem("via_session_active") === "true") {
-                    const name = localStorage.getItem("via_student_name") || "Aluno";
-                    const email = localStorage.getItem("via_student_email") || "";
-                    activateSessionUI(name, email);
-                }
-            } catch (err) {
-                console.warn("Erro ao verificar sessão em localStorage:", err);
-            }
+            initializeApp();
         });
     </script>
 </body>
