@@ -1,0 +1,16 @@
+# CODEOWNERS — exige revisão do dono do repositório para caminhos sensíveis.
+#
+# ATENÇÃO: este arquivo só passa a ser OBRIGATÓRIO se, em
+# Settings → Branches, existir uma regra de proteção no branch `main` com
+# "Require a pull request before merging" + "Require review from Code Owners"
+# ativas. Sem essa proteção, o CODEOWNERS apenas sugere revisores.
+
+# Publicação / CI / deploy — quebrar isto tira o site do ar
+/.github/               @LucasHRAlmeida
+/.github/workflows/     @LucasHRAlmeida
+/.nojekyll              @LucasHRAlmeida
+
+# Governança para agentes (leitura obrigatória)
+/POP-000.md             @LucasHRAlmeida
+/AGENTS.md              @LucasHRAlmeida
+/CLAUDE.md              @LucasHRAlmeida

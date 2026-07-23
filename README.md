@@ -14,7 +14,9 @@ Plataforma educativa interativa para ensino de **Vias de Sinalização Oncológi
 
 ### Acesso Online
 A aplicação está disponível via GitHub Pages:
-**[Acesse aqui](https://lucashralmeid.github.io/ensino-gamificado/)**
+**[Acesse aqui](https://lucashralmeida.github.io/ensino-gamificado/)**
+
+Há também uma **versão em prosa + diagramas didáticos**: [`prosa-diagramas.html`](https://lucashralmeida.github.io/ensino-gamificado/prosa-diagramas.html)
 
 ### Executar Localmente
 1. Clone o repositório:
@@ -27,6 +29,12 @@ A aplicação está disponível via GitHub Pages:
    ```bash
    open index.html
    ```
+
+## 🚀 Publicação (GitHub Pages)
+
+O site é publicado automaticamente pelo workflow [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml), que republica o conteúdo a cada push no branch `main` (e pode ser disparado manualmente em **Actions → "Deploy to GitHub Pages" → Run workflow**).
+
+> ⚠️ **Dependência de configuração:** para o deploy funcionar, a fonte do Pages precisa estar em **Settings → Pages → Build and deployment → Source = "GitHub Actions"**. Se essa fonte for trocada para "Deploy from a branch", **a publicação automática deixa de acontecer** e o site congela numa versão antiga. Não altere essa configuração sem necessidade.
 
 ## 📋 Estrutura
 
@@ -84,7 +92,7 @@ Importe questões rápidas com as colunas:
 - **HTML5 + CSS3 + JavaScript** (vanilla, sem dependências externas)
 - **html2pdf.js** - Geração de relatórios em PDF
 - **PapaParse** - Parsing de arquivos CSV
-- **LocalStorage** - Persistência de dados de sessão
+- **LocalStorage** - Persistência de dados (resultados do quiz e conteúdo customizado)
 
 ## 📝 Bugs Corrigidos
 
@@ -92,6 +100,14 @@ Importe questões rápidas com as colunas:
 - ✅ Validação melhorada de importação CSV
 - ✅ Promise handling correto em exportação de PDF
 - ✅ Error handling em todas as operações críticas
+
+## 🤖 Governança para Agentes (POP 000)
+
+Alterações neste repositório — por agentes de IA (Claude, Grok, Copilot, etc.) ou por humanos — seguem a **[POP 000](POP-000.md)** (Procedimento Operacional Padrão).
+
+- 📄 **Leitura obrigatória antes de qualquer alteração:** [`POP-000.md`](POP-000.md) e [`AGENTS.md`](AGENTS.md).
+- 🔒 Caminhos sensíveis (workflows, `.nojekyll`, docs de governança) têm revisão de dono via [`.github/CODEOWNERS`](.github/CODEOWNERS).
+- ✍️ **Todo Pull Request** deve conter, por escrito, a declaração de ter lido e seguido a POP 000 (ver [modelo de PR](.github/pull_request_template.md)).
 
 ## 👨‍🏫 Autor
 
