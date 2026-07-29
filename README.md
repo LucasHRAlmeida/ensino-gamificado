@@ -1,6 +1,6 @@
 # VIA - Vida Integrada e Autônoma
 
-Plataforma educativa interativa para ensino de **Vias de Sinalização Oncológica** e os **14 Hallmarks do Câncer**.
+Plataforma educativa interativa para ensino de **Vias de Sinalização Oncológica** e os **14 Hallmarks do Câncer**. PoC para metodologia de ensino com gameficação
 
 ## 🎯 Funcionalidades
 
